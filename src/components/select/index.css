@@ -1,0 +1,44 @@
+.card.flex.justify-content-center {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+}
+
+.card.flex.justify-content-center > span {
+    color: #0B4366;
+    font-weight: 500;
+    margin-left: 0px;
+}
+
+.p-multiselect-label-container {
+    height: 40px;
+    padding: 7px;
+}
+
+.p-multiselect-header {
+    margin-left: 10px;
+}
+
+.p-multiselect-items-wrapper {
+    padding: 10px !important;
+}
+
+.p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-inputtext {
+    margin: 10px !important;
+    width: 180px;
+}
+
+span,
+.p-multiselect .p-multiselect-label,
+.p-multiselect .p-multiselect-label.p-placeholder,
+.p-inputtext .p-component .p-filled .p-multiselect-filter {
+    font-size: 20px;
+}
+
+.p-multiselect-close,
+.p-multiselect-filter-icon {
+    display: none;
+}
+
+.p-inputtext {
+    text-indent: 10px !important;
+}

@@ -4,7 +4,7 @@ export const SidebarData = [
   {
     title: 'Dashboard',
     path: '/',
-    icon: <LuIcons.LuLineChart />,
+    icon: <LuIcons.LuLineChart size={22} />,
     cName: 'nav-text'
   }
 ];
