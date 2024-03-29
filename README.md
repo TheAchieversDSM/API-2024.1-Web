@@ -24,7 +24,7 @@
 git clone https://github.com/TheAchieversDSM/API-2024.1-Web
 
 # Acesse a pasta do projeto
-cd api
+cd api-web
 
 # Instale as dependências
 npm install
