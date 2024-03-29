@@ -1,6 +1,7 @@
 import { Sidebar } from "../../components/sidebar"
 import Container from "../../components/container"
 import Select from '../../components/select';
+import Btn from "../../components/button";
 import { useState } from "react";
 import './index.css';
 
@@ -22,7 +23,7 @@ export default function Dashboard() {
     ];
 
     console.log(categories);
-    
+
 
     return (
         <>
@@ -48,8 +49,14 @@ export default function Dashboard() {
                         multiple={true}
                         placeholder={"Selecione as opções"}
                         width={300}
-                        maxSelected={3}
+                        maxSelected={2}
                         onChange={(e) => setOptions(e.value)}
+                    />
+
+                    <Btn
+                        label="Buscar"
+                        icon='pi pi-search'
+                        onClick={() => console.log(categories, options)}
                     />
                 </div>
             </Container>
