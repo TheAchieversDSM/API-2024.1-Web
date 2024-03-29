@@ -9,6 +9,10 @@
     margin-left: 0px;
 }
 
+.p-multiselect {
+    border: 0.5px solid #0B4366 ;
+}
+
 .p-multiselect-label-container {
     height: 40px;
     padding: 7px;
