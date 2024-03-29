@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { router } from './routes';
 import React from 'react';
 
+import 'rsuite/dist/rsuite.min.css';
 import "primereact/resources/themes/saga-blue/theme.css";
 
 const root = ReactDOM.createRoot(

@@ -4,7 +4,7 @@ import './index.css'
 
 export default function Select(props: ISelect) {
     return (
-        <div className='card flex justify-content-center'>
+        <div className='card flex justify-content-center dropdown'>
             <span>{props.name}</span>
             
             <MultiSelect

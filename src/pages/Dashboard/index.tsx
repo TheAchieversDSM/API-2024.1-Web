@@ -1,3 +1,4 @@
+import Datepicker from "../../components/datepicker";
 import { Sidebar } from "../../components/sidebar"
 import Container from "../../components/container"
 import Select from '../../components/select';
@@ -8,6 +9,7 @@ import './index.css';
 export default function Dashboard() {
     const [categories, setCategories] = useState<{ id: string, name: string }[]>([]);
     const [options, setOptions] = useState<{ id: string, name: string }[]>([]);
+    const [date, setDate ] = useState(null);
 
     const categoriesList = [
         { name: 'Produtos', id: '1' },
@@ -22,9 +24,6 @@ export default function Dashboard() {
         { name: 'Categoria 5', id: '5' }
     ];
 
-    console.log(categories);
-
-
     return (
         <>
             <Sidebar />
@@ -33,6 +32,15 @@ export default function Dashboard() {
                 <h1>Dashboard</h1>
 
                 <div className="filter-container">
+                    <Datepicker
+                        placeholder={"Selecione uma data"}
+                        value={date}
+                        onOk={(date: any) => {
+                            setDate(date);
+                            console.log("Data selecionada:", date);
+                        }}
+                    />
+
                     <Select
                         value={categories}
                         options={categoriesList}
@@ -56,7 +64,7 @@ export default function Dashboard() {
                     <Btn
                         label="Buscar"
                         icon='pi pi-search'
-                        onClick={() => console.log(categories, options)}
+                        onClick={() => console.log(date, categories, options)}
                     />
                 </div>
             </Container>
