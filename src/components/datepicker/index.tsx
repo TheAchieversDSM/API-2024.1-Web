@@ -6,20 +6,23 @@ import ptBR from 'rsuite/locales/pt_BR';
 import './index.css'
 
 export default function Datepicker(props: IDatepicker) {
-    return (
-        <div className='card flex justify-content-center'>
-            <span>Data</span>
+return (
+    <div className='card flex justify-content-center'>
+        <span>Data</span>
 
-            <IntlProvider locale="pt-BR">
-                <CustomProvider locale={ptBR}>
-                    <DateRangePicker
-                        format='dd/MM/yyyy'
-                        placeholder={props.placeholder}
-                        value={props.value}
-                        onOk={props.onOk}
-                    />
-                </CustomProvider>
-            </IntlProvider>
-        </div>
-    );
+        <IntlProvider locale="pt-BR">
+            <CustomProvider locale={ptBR}>
+                <DateRangePicker
+                    format='dd/MM/yyyy'
+                    placeholder={props.placeholder}
+                    value={props.value}
+                    onShortcutClick={props.onShorcut}
+                    onOk={props.onOk}
+                    onClean={() => 'limpando'}
+                    cleanable={true}
+                />
+            </CustomProvider>
+        </IntlProvider>
+    </div>
+);
 }

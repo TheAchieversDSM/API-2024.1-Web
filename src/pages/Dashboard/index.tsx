@@ -1,3 +1,4 @@
+import { DateRange } from "rsuite/esm/DateRangePicker";
 import Datepicker from "../../components/datepicker";
 import { Sidebar } from "../../components/sidebar"
 import Container from "../../components/container"
@@ -9,7 +10,7 @@ import './index.css';
 export default function Dashboard() {
     const [categories, setCategories] = useState<{ id: string, name: string }[]>([]);
     const [options, setOptions] = useState<{ id: string, name: string }[]>([]);
-    const [date, setDate ] = useState(null);
+    const [date, setDate] = useState<DateRange | undefined>();
 
     const categoriesList = [
         { name: 'Produtos', id: '1' },
@@ -24,6 +25,24 @@ export default function Dashboard() {
         { name: 'Categoria 5', id: '5' }
     ];
 
+    function handleShortcut(shortcut: any) {        
+        if (shortcut.label === 'today') {           
+            const today = new Date();
+            setDate([today, today]);
+
+        } else if (shortcut.label === 'yesterday') {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            setDate([yesterday, yesterday]);
+
+        } else if (shortcut.label === 'last7Days') {
+            const endDate = new Date();
+            const startDate = new Date();
+            startDate.setDate(endDate.getDate() - 6);
+            setDate([startDate, endDate]);
+        }
+    }
+
     return (
         <>
             <Sidebar />
@@ -35,6 +54,7 @@ export default function Dashboard() {
                     <Datepicker
                         placeholder={"Selecione uma data"}
                         value={date}
+                        onShorcut={handleShortcut}
                         onOk={(date: any) => {
                             setDate(date);
                             console.log("Data selecionada:", date);
