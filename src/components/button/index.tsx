@@ -10,7 +10,7 @@ export default function Btn(props: IButton) {
             onClick={props.onClick}
             style={{ 
                 width: props.width || '140px', 
-                height: props.height || '42px',
+                height: props.height || '46px',
                 marginTop: props.marginTop || '30px',
                 background: props.bg || '#0B4366',
                 color: props.color || '#fff',
