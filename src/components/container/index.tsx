@@ -7,7 +7,7 @@ interface ContainerProps {
 
 export default function Container({ children }: ContainerProps) {
     return (
-        <div className="container">
+        <div className="geral-container">
             {children}
         </div>
     )

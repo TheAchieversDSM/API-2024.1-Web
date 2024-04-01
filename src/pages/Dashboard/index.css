@@ -4,8 +4,23 @@ h1 {
     margin-bottom: 30px !important;
 }
 
-.filter-container {
+.flex-container {
     gap: 20px;
     display: flex;
     flex-direction: row;
+}
+
+.chart-div > .p-chart{
+    width: fit-content !important
+}
+
+.chart-div{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.graficos-container{
+    margin: 30px 0px;
 }
