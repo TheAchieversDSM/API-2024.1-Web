@@ -5,6 +5,6 @@ import { RangeType } from "rsuite/esm/DatePicker";
 export interface IDatepicker {
     placeholder: string,
     value?: DateRange,
-    onShorcut?: (range: RangeType<DateRange>, event: any) => void;
+    onShortcut?: (range: RangeType<DateRange>, event: any) => void;
     onOk: (date: DateRange, event: SyntheticEvent<Element, Event>) => void
 }

@@ -4,23 +4,35 @@ h1 {
     margin-bottom: 30px !important;
 }
 
-.flex-container {
+.filters-container {
     gap: 20px;
     display: flex;
-    flex-direction: row;
+    flex-direction: row;    
 }
 
-.chart-div > .p-chart{
+.flex-container {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.bottom-charts {
+    margin-top: 50px;
+    gap: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.chart-div > .p-chart {
     width: fit-content !important
 }
 
-.chart-div{
+.chart-div {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
-.graficos-container{
+.graficos-container {
     margin: 30px 0px;
 }

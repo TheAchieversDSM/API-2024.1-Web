@@ -1,13 +1,21 @@
 import { DateRange } from "rsuite/esm/DateRangePicker";
-import Datepicker from "../../components/datepicker";
-import Select from '../../components/select';
 import Multiselect from '../../components/multiselect';
+import Datepicker from "../../components/datepicker";
+import { Filters } from "../../interfaces/filters";
+import Select from '../../components/select';
 import Btn from "../../components/button";
 import { useState } from "react";
 
-export default function Filtros() {
+type FilterChangeHandler = (filters: Filters) => void;
+
+interface FiltrosProps {
+    onFilterChange: FilterChangeHandler;
+}
+
+export default function Filtros({ onFilterChange }: FiltrosProps) {
+    const [category, setCategory] = useState<{ id: string, name: string }>();
     const [categories, setCategories] = useState<{ id: string, name: string }[]>([]);
-    const [options, setOptions] = useState<{ id: string, name: string }[]>([]);
+    const [options, setOptions] = useState<{ id: string, name: string, catId: number }[]>([]);
     const [date, setDate] = useState<DateRange | undefined>();
 
     const categoriesList = [
@@ -16,11 +24,11 @@ export default function Filtros() {
     ];
 
     const optionsList = [
-        { name: 'Categoria 1', id: '1' },
-        { name: 'Categoria 2', id: '2' },
-        { name: 'Categoria 3', id: '3' },
-        { name: 'Categoria 4', id: '4' },
-        { name: 'Categoria 5', id: '5' }
+        { name: 'Categoria 1', id: '1', catId: 2 },
+        { name: 'Categoria 2', id: '2', catId: 2 },
+        { name: 'Categoria 3', id: '3', catId: 2 },
+        { name: 'Produto 1', id: '4', catId: 1 },
+        { name: 'Produto 2', id: '5', catId: 1 }
     ];
 
     function handleShortcut(shortcut: any) {
@@ -40,17 +48,15 @@ export default function Filtros() {
             setDate([startDate, endDate]);
         }
     }
+
     return (
         <>
-            <div className="flex-container">
+            <div className="filters-container">
                 <Datepicker
                     placeholder={"Selecione uma data"}
                     value={date}
-                    onShorcut={handleShortcut}
-                    onOk={(date: any) => {
-                        setDate(date);
-                        console.log("Data selecionada:", date);
-                    }}
+                    onShortcut={handleShortcut}
+                    onOk={(date: any) => setDate(date)}
                 />
 
                 <Select
@@ -58,12 +64,20 @@ export default function Filtros() {
                     options={categoriesList}
                     name={'Grupo'}
                     placeholder={'Selecione o grupo'}
-                    onChange={(e) => setCategories(e.value)}
+                    onChange={(e) => { 
+                        if (e.value) { 
+                            setCategories(e.value); 
+                            setCategory({name: e.value.name, id: e.value.id});
+                        } else {
+                            setCategories([]);
+                            setCategory(undefined);
+                        }
+                    }}
                 />
 
                 <Multiselect
                     value={options}
-                    options={optionsList}
+                    options={category ? optionsList.filter(option => option.catId === parseInt(category.id)) : optionsList}
                     name={'Opções'}
                     placeholder={'Selecione as opções'}
                     width={300}
@@ -74,7 +88,9 @@ export default function Filtros() {
                 <Btn
                     label="Buscar"
                     icon='pi pi-search'
-                    onClick={() => console.log(date, categories, options)}
+                    onClick={() => {
+                        console.log(date, categories, options); onFilterChange({ dateRange: date, categories, selectedOptions: options });
+                    }}
                 />
             </div>
         </>
