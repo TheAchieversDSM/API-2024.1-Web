@@ -1,10 +1,10 @@
 import { DateRange } from "rsuite/esm/DateRangePicker";
 import Multiselect from '../../components/multiselect';
 import Datepicker from "../../components/datepicker";
-import Select from '../../components/select';
-import { useEffect, useState } from "react";
-import Btn from "../../components/button";
 import { Filters } from "../../interfaces/filters";
+import Select from '../../components/select';
+import Btn from "../../components/button";
+import { useState } from "react";
 
 type FilterChangeHandler = (filters: Filters) => void;
 
@@ -13,8 +13,9 @@ interface FiltrosProps {
 }
 
 export default function Filtros({ onFilterChange }: FiltrosProps) {
+    const [category, setCategory] = useState<{ id: string, name: string }>();
     const [categories, setCategories] = useState<{ id: string, name: string }[]>([]);
-    const [options, setOptions] = useState<{ id: string, name: string }[]>([]);
+    const [options, setOptions] = useState<{ id: string, name: string, catId: number }[]>([]);
     const [date, setDate] = useState<DateRange | undefined>();
 
     const categoriesList = [
@@ -23,11 +24,11 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
     ];
 
     const optionsList = [
-        { name: 'Categoria 1', id: '1' },
-        { name: 'Categoria 2', id: '2' },
-        { name: 'Categoria 3', id: '3' },
-        { name: 'Categoria 4', id: '4' },
-        { name: 'Categoria 5', id: '5' }
+        { name: 'Categoria 1', id: '1', catId: 2 },
+        { name: 'Categoria 2', id: '2', catId: 2 },
+        { name: 'Categoria 3', id: '3', catId: 2 },
+        { name: 'Produto 1', id: '4', catId: 1 },
+        { name: 'Produto 2', id: '5', catId: 1 }
     ];
 
     function handleShortcut(shortcut: any) {
@@ -46,7 +47,7 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
             startDate.setDate(endDate.getDate() - 6);
             setDate([startDate, endDate]);
         }
-    }    
+    }
 
     return (
         <>
@@ -54,11 +55,8 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
                 <Datepicker
                     placeholder={"Selecione uma data"}
                     value={date}
-                    onShorcut={handleShortcut}
-                    onOk={(date: any) => {
-                        setDate(date);
-                        console.log("Data selecionada:", date);
-                    }}
+                    onShortcut={handleShortcut}
+                    onOk={(date: any) => setDate(date)}
                 />
 
                 <Select
@@ -66,12 +64,20 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
                     options={categoriesList}
                     name={'Grupo'}
                     placeholder={'Selecione o grupo'}
-                    onChange={(e) => setCategories(e.value)}
+                    onChange={(e) => { 
+                        if (e.value) { 
+                            setCategories(e.value); 
+                            setCategory({name: e.value.name, id: e.value.id});
+                        } else {
+                            setCategories([]);
+                            setCategory(undefined);
+                        }
+                    }}
                 />
 
                 <Multiselect
                     value={options}
-                    options={optionsList}
+                    options={category ? optionsList.filter(option => option.catId === parseInt(category.id)) : optionsList}
                     name={'Opções'}
                     placeholder={'Selecione as opções'}
                     width={300}
@@ -82,8 +88,9 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
                 <Btn
                     label="Buscar"
                     icon='pi pi-search'
-                    onClick={() => { console.log(date, categories, options); onFilterChange({ dateRange: date, categories, selectedOptions: options });
-                }}
+                    onClick={() => {
+                        console.log(date, categories, options); onFilterChange({ dateRange: date, categories, selectedOptions: options });
+                    }}
                 />
             </div>
         </>

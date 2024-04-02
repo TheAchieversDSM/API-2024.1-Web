@@ -16,7 +16,7 @@ return (
                     format='dd/MM/yyyy'
                     placeholder={props.placeholder}
                     value={props.value}
-                    onShortcutClick={props.onShorcut}
+                    onShortcutClick={props.onShortcut}
                     onOk={props.onOk}
                     onClean={() => 'limpando'}
                     cleanable={true}

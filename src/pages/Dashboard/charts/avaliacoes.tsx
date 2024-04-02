@@ -5,18 +5,19 @@ import { Chart } from 'primereact/chart';
 
 export default function Avaliacoes({ filters }: { filters: Filters }) {
     const [chartData, setChartData] = useState({});
-    const [chartOptions, setChartOptions] = useState({}); 
+    const [chartOptions, setChartOptions] = useState({});
 
+    // datasets ✨
     const datasets = filters.selectedOptions.map((option, index) => {
         return {
             label: option.name,
-            data: generateRandomData(), 
+            data: generateRandomData(),
             fill: false,
-            borderColor: getRandomColor(index), 
+            borderColor: getRandomColor(index),
             tension: 0.4
         };
     });
-    
+
     function generateRandomData() {
         const data = [];
         for (let i = 0; i < 7; i++) {
@@ -24,15 +25,34 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
         }
         return data;
     }
-    
+
     function getRandomColor(index: any) {
         const colors = ['#3BAEDA', '#BC6CDD', '#FF5733', '#FFC300', '#FF33E9', '#33FF7D', '#3388FF'];
         return colors[index % colors.length];
     }
 
+    // labels ✨
+    function generateLabels(startDate: Date, endDate: Date) {
+        const labels = [];
+        const currentDate = new Date(startDate);
+
+        while (currentDate <= endDate) {
+            labels.push(new Date(currentDate).toLocaleDateString('pt-BR'));
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        return labels;
+    }
+
+    let labels: string[] = []
+    
+    if (filters.dateRange) {
+        labels = generateLabels(filters.dateRange[0], filters.dateRange[1]);
+    } 
+
     const updateChart = (filters: Filters) => {
         const data = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: labels,
             datasets: datasets
         };
 
@@ -73,7 +93,7 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
         setChartOptions(options);
     };
 
-    useEffect(() => {        
+    useEffect(() => {
         updateChart(filters);
     }, [filters])
 
