@@ -1,11 +1,12 @@
-import { DateRange } from "rsuite/esm/DateRangePicker";
-import Datepicker from "../../components/datepicker";
-import { Sidebar } from "../../components/sidebar"
-import Container from "../../components/container"
-import Select from '../../components/select';
-import Btn from "../../components/button";
-import { useState } from "react";
-import './index.css';
+import { DateRange } from 'rsuite/esm/DateRangePicker'
+import Multiselect from '../../components/multiselect'
+import Datepicker from '../../components/datepicker'
+import { Sidebar } from '../../components/sidebar'
+import Container from '../../components/container'
+import Select from '../../components/select'
+import Btn from '../../components/button'
+import { useState } from 'react'
+import './index.css'
 
 export default function Dashboard() {
     const [categories, setCategories] = useState<{ id: string, name: string }[]>([]);
@@ -50,39 +51,37 @@ export default function Dashboard() {
             <Container>
                 <h1>Dashboard</h1>
 
-                <div className="filter-container">
+                <div className='filter-container'>
                     <Datepicker
-                        placeholder={"Selecione uma data"}
+                        placeholder={'Selecione uma data'}
                         value={date}
                         onShorcut={handleShortcut}
                         onOk={(date: any) => {
                             setDate(date);
-                            console.log("Data selecionada:", date);
+                            console.log('Data selecionada:', date);
                         }}
                     />
 
                     <Select
                         value={categories}
                         options={categoriesList}
-                        name={"Grupo"}
-                        multiple={false}
-                        placeholder={"Selecione o grupo"}
+                        name={'Grupo'}
+                        placeholder={'Selecione o grupo'}
                         onChange={(e) => setCategories(e.value)}
                     />
 
-                    <Select
+                    <Multiselect
                         value={options}
                         options={optionsList}
-                        name={"Opções"}
-                        multiple={true}
-                        placeholder={"Selecione as opções"}
+                        name={'Opções'}
+                        placeholder={'Selecione as opções'}
                         width={300}
                         maxSelected={2}
                         onChange={(e) => setOptions(e.value)}
                     />
 
                     <Btn
-                        label="Buscar"
+                        label='Buscar'
                         icon='pi pi-search'
                         onClick={() => console.log(date, categories, options)}
                     />

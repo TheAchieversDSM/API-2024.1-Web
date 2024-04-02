@@ -5,7 +5,6 @@ export interface ISelect {
     options: { id: string, name: string }[],
     name: string,
     width?: number,
-    multiple: boolean,
     placeholder: string,
     maxSelected?: number,
     onChange: (e: MultiSelectChangeEvent) => void,
