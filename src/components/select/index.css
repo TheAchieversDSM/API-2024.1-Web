@@ -19,16 +19,13 @@
 .p-inputtext {
     height: 30px;
     padding: 7px;
-    text-indent: 10px !important;
+    text-indent: -8px !important;
 }
 
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item,
+.p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message,
 .p-dropdown-filter-container {
     padding: 8px
-}
-
-.p-inputtext {
-    text-indent: -8px !important;
 }
 
 span,
@@ -36,6 +33,10 @@ span,
 .p-multiselect .p-multiselect-label.p-placeholder,
 .p-inputtext .p-component .p-filled .p-multiselect-filter {
     font-size: 18px;
+}
+
+.p-dropdown .p-dropdown-clear-icon {
+    top: 12px !important
 }
 
 .p-dropdown-panel .p-dropdown-header .p-dropdown-filter-icon {

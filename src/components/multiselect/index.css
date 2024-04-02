@@ -52,14 +52,16 @@ span,
     display: none;
 }
 
-.p-inputtext {
-    text-indent: 10px !important;
-}
-
 .p-multiselect-item {
     padding: 8px
 }
 
 .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight {
     background: none !important;
+}
+
+.p-multiselect-clear-icon {
+    position: absolute;
+    top: 30%;
+    right: 2.2rem;
 }

@@ -14,6 +14,7 @@ export default function Multiselect(props: ISelect) {
                 optionLabel='name'
                 filter placeholder={props.placeholder}
                 maxSelectedLabels={props.maxSelected}
+                showClear
                 style={{ width: props.width || '250px' }}
             />
         </div>
