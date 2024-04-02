@@ -1,11 +1,18 @@
 import { DateRange } from "rsuite/esm/DateRangePicker";
+import Multiselect from '../../components/multiselect';
 import Datepicker from "../../components/datepicker";
 import Select from '../../components/select';
-import Multiselect from '../../components/multiselect';
+import { useEffect, useState } from "react";
 import Btn from "../../components/button";
-import { useState } from "react";
+import { Filters } from "../../interfaces/filters";
 
-export default function Filtros() {
+type FilterChangeHandler = (filters: Filters) => void;
+
+interface FiltrosProps {
+    onFilterChange: FilterChangeHandler;
+}
+
+export default function Filtros({ onFilterChange }: FiltrosProps) {
     const [categories, setCategories] = useState<{ id: string, name: string }[]>([]);
     const [options, setOptions] = useState<{ id: string, name: string }[]>([]);
     const [date, setDate] = useState<DateRange | undefined>();
@@ -39,10 +46,11 @@ export default function Filtros() {
             startDate.setDate(endDate.getDate() - 6);
             setDate([startDate, endDate]);
         }
-    }
+    }    
+
     return (
         <>
-            <div className="flex-container">
+            <div className="filters-container">
                 <Datepicker
                     placeholder={"Selecione uma data"}
                     value={date}
@@ -74,7 +82,8 @@ export default function Filtros() {
                 <Btn
                     label="Buscar"
                     icon='pi pi-search'
-                    onClick={() => console.log(date, categories, options)}
+                    onClick={() => { console.log(date, categories, options); onFilterChange({ dateRange: date, categories, selectedOptions: options });
+                }}
                 />
             </div>
         </>
