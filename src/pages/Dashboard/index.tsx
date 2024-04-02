@@ -1,7 +1,36 @@
+import { Sidebar } from '../../components/sidebar'
+import { Filters } from '../../interfaces/filters'
+import Container from '../../components/container'
+import Avaliacoes from './charts/avaliacoes'
+import Temas from './charts/temas'
+import Tags from './charts/tags'
+import { useState } from 'react'
+import Filtros from './filtros'
+import './index.css'
+
 export default function Dashboard() {
-    return(
+    const [filters, setFilters] = useState<Filters>({
+        dateRange: undefined,
+        categories: [],
+        selectedOptions: []
+    })   
+
+    return (
         <>
-            <h1>Dashboard</h1>
+            <Sidebar />
+            <Container>
+                <h1>Dashboard</h1>
+                <Filtros onFilterChange={ (filters) => setFilters(filters) } />
+                <div className='graficos-container'>
+                    <div className='flex-container'>
+                        <Avaliacoes filters={ filters }/>
+                        <section className='bottom-charts'>
+                            <Tags />
+                            <Temas />
+                        </section>
+                    </div>
+                </div>
+            </Container>
         </>
     )
 }

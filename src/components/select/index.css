@@ -1,0 +1,45 @@
+.card.flex.justify-content-center {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+}
+
+.card.flex.justify-content-center.dropdown > span {
+    color: #0B4366;
+    font-weight: 500;
+    margin-left: 0px;
+    margin-bottom: 0px;
+}
+
+.p-dropdown {
+    margin-top: 4px;
+    border: 0.5px solid #0B4366 ;
+    height: 42px;
+}
+
+.p-inputtext {
+    height: 30px;
+    padding: 7px;
+    text-indent: -8px !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item,
+.p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message,
+.p-dropdown-filter-container {
+    padding: 8px
+}
+
+span,
+.p-multiselect .p-multiselect-label,
+.p-multiselect .p-multiselect-label.p-placeholder,
+.p-inputtext .p-component .p-filled .p-multiselect-filter {
+    font-size: 18px;
+}
+
+.p-dropdown .p-dropdown-clear-icon {
+    top: 12px !important
+}
+
+.p-dropdown-panel .p-dropdown-header .p-dropdown-filter-icon {
+    right: 1.2rem !important;
+    top: 15px !important;
+}

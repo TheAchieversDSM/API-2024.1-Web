@@ -1,0 +1,67 @@
+.card.flex.justify-content-center {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+}
+
+.card.flex.justify-content-center.dropdown > span {
+    color: #0B4366;
+    font-weight: 500;
+    margin-left: 0px;
+    margin-bottom: 0px;
+}
+
+.p-checkbox.p-highlight .p-checkbox-box {
+    background-color: #0B4366 !important;
+    border: 1px solid #0B4366;
+}   
+
+.p-multiselect {
+    margin-top: 4px;
+    border: 0.5px solid #0B4366 ;
+    height: 42px;
+}
+
+.p-multiselect-label-container {
+    height: 30px;
+    padding: 7px;
+    text-indent: 5px;
+}
+
+.p-multiselect-header {
+    margin-left: 10px;
+}
+
+.p-multiselect-items-wrapper {
+    padding: 10px !important;
+}
+
+.p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-inputtext {
+    margin: 10px !important;
+    width: 180px;
+}
+
+span,
+.p-multiselect .p-multiselect-label,
+.p-multiselect .p-multiselect-label.p-placeholder,
+.p-inputtext .p-component .p-filled .p-multiselect-filter {
+    font-size: 18px;
+}
+
+.p-multiselect-close,
+.p-multiselect-filter-icon {
+    display: none;
+}
+
+.p-multiselect-item {
+    padding: 8px
+}
+
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight {
+    background: none !important;
+}
+
+.p-multiselect-clear-icon {
+    position: absolute;
+    top: 30%;
+    right: 2.2rem;
+}
