@@ -1,6 +1,7 @@
 import { DateRange } from "rsuite/esm/DateRangePicker";
 import Datepicker from "../../components/datepicker";
 import Select from '../../components/select';
+import Multiselect from '../../components/multiselect';
 import Btn from "../../components/button";
 import { useState } from "react";
 
@@ -22,8 +23,8 @@ export default function Filtros() {
         { name: 'Categoria 5', id: '5' }
     ];
 
-    function handleShortcut(shortcut: any) {        
-        if (shortcut.label === 'today') {           
+    function handleShortcut(shortcut: any) {
+        if (shortcut.label === 'today') {
             const today = new Date();
             setDate([today, today]);
 
@@ -39,45 +40,43 @@ export default function Filtros() {
             setDate([startDate, endDate]);
         }
     }
-    return(
+    return (
         <>
             <div className="flex-container">
-                    <Datepicker
-                        placeholder={"Selecione uma data"}
-                        value={date}
-                        onShorcut={handleShortcut}
-                        onOk={(date: any) => {
-                            setDate(date);
-                            console.log("Data selecionada:", date);
-                        }}
-                    />
+                <Datepicker
+                    placeholder={"Selecione uma data"}
+                    value={date}
+                    onShorcut={handleShortcut}
+                    onOk={(date: any) => {
+                        setDate(date);
+                        console.log("Data selecionada:", date);
+                    }}
+                />
 
-                    <Select
-                        value={categories}
-                        options={categoriesList}
-                        name={"Grupo"}
-                        multiple={false}
-                        placeholder={"Selecione o grupo"}
-                        onChange={(e) => setCategories(e.value)}
-                    />
+                <Select
+                    value={categories}
+                    options={categoriesList}
+                    name={'Grupo'}
+                    placeholder={'Selecione o grupo'}
+                    onChange={(e) => setCategories(e.value)}
+                />
 
-                    <Select
-                        value={options}
-                        options={optionsList}
-                        name={"Opções"}
-                        multiple={true}
-                        placeholder={"Selecione as opções"}
-                        width={300}
-                        maxSelected={2}
-                        onChange={(e) => setOptions(e.value)}
-                    />
+                <Multiselect
+                    value={options}
+                    options={optionsList}
+                    name={'Opções'}
+                    placeholder={'Selecione as opções'}
+                    width={300}
+                    maxSelected={2}
+                    onChange={(e) => setOptions(e.value)}
+                />
 
-                    <Btn
-                        label="Buscar"
-                        icon='pi pi-search'
-                        onClick={() => console.log(date, categories, options)}
-                    />
-                </div>
+                <Btn
+                    label="Buscar"
+                    icon='pi pi-search'
+                    onClick={() => console.log(date, categories, options)}
+                />
+            </div>
         </>
     )
 }
