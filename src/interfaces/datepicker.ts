@@ -6,5 +6,6 @@ export interface IDatepicker {
     placeholder: string,
     value?: DateRange,
     onShortcut?: (range: RangeType<DateRange>, event: any) => void;
-    onOk: (date: DateRange, event: SyntheticEvent<Element, Event>) => void
+    onClean?: (event: any) => void;
+    onOk: (date: DateRange, event: SyntheticEvent<Element, Event>) => void;
 }

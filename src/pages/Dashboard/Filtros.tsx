@@ -56,6 +56,7 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
                     placeholder={"Selecione uma data"}
                     value={date}
                     onShortcut={handleShortcut}
+                    onClean={() => setDate(undefined)}
                     onOk={(date: any) => setDate(date)}
                 />
 
