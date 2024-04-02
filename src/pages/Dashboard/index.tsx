@@ -5,7 +5,7 @@ import Avaliacoes from './charts/avaliacoes'
 import Temas from './charts/temas'
 import Tags from './charts/tags'
 import { useState } from 'react'
-import Filtros from './filtros'
+import Filtros from './Filtros'
 import './index.css'
 
 export default function Dashboard() {
