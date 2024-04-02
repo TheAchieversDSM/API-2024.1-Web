@@ -6,30 +6,7 @@ import { Chart } from 'primereact/chart';
 export default function Avaliacoes({ filters }: { filters: Filters }) {
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
-
-    // datasets ✨
-    const datasets = filters.selectedOptions.map((option, index) => {
-        return {
-            label: option.name,
-            data: generateRandomData(),
-            fill: false,
-            borderColor: getRandomColor(index),
-            tension: 0.4
-        };
-    });
-
-    function generateRandomData() {
-        const data = [];
-        for (let i = 0; i < 7; i++) {
-            data.push(Math.floor(Math.random() * 100));
-        }
-        return data;
-    }
-
-    function getRandomColor(index: any) {
-        const colors = ['#3BAEDA', '#BC6CDD', '#FF5733', '#FFC300', '#FF33E9', '#33FF7D', '#3388FF'];
-        return colors[index % colors.length];
-    }
+    let labels: string[] = []
 
     // labels ✨
     function generateLabels(startDate: Date, endDate: Date) {
@@ -44,11 +21,33 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
         return labels;
     }
 
-    let labels: string[] = []
-    
     if (filters.dateRange) {
         labels = generateLabels(filters.dateRange[0], filters.dateRange[1]);
-    } 
+    }
+
+    // datasets ✨
+    const datasets = filters.selectedOptions.map((option, index) => {
+        return {
+            label: option.name,
+            data: generateRandomData(),
+            fill: false,
+            borderColor: getRandomColor(index),
+            tension: 0.4
+        };
+    });
+
+    function generateRandomData() {
+        const data = [];
+        for (let i = 0; i < labels.length; i++) {
+            data.push(Math.floor(Math.random() * 100));
+        }
+        return data;
+    }
+
+    function getRandomColor(index: any) {
+        const colors = ['#3BAEDA', '#BC6CDD', '#FF5733', '#FFC300', '#FF33E9', '#33FF7D', '#3388FF'];
+        return colors[index % colors.length];
+    }
 
     const updateChart = (filters: Filters) => {
         const data = {
@@ -72,11 +71,12 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
             scales: {
                 x: {
                     ticks: {
-                        color: '#666'
+                        color: '#666',
+                        maxTicksLimit: 15,
                     },
                     grid: {
                         color: '#ccc'
-                    }
+                    },
                 },
                 y: {
                     ticks: {
