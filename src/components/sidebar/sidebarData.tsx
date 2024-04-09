@@ -10,7 +10,7 @@ export const SidebarData = [
   {
     title: 'Upload',
     path: '/upload',
-    icon: <LuIcons.LuLineChart size={22} />,
+    icon: <LuIcons.LuUpload size={22} />,
     cName: 'nav-text'
   },
 ];

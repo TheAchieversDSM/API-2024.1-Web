@@ -18,8 +18,8 @@ export default function Upload() {
         <div className="upload">
             <Sidebar />
                 <Container>
-                    <h1>Importação de dados</h1>
-                    <Box titulo="Arquivos para processamento">
+                    <h1>Upload de arquivos</h1>
+                    <Box titulo="">
                     <Toast ref={toast}></Toast>
                     <FileUpload
                         mode="basic"
