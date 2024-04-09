@@ -1,0 +1,26 @@
+.upload{
+    .p-fileupload-choose{
+        background-color: #0B4366 !important;
+        border: none !important;
+        margin-top: 6px
+    }
+
+    .p-button-label .p-clickable{
+        margin-left: 0px !important;
+    }
+
+    .cont-table{
+        margin-top: 30px;
+    }
+    
+    th{
+        padding: 10px 0px !important;
+        background-color: #0B4366;
+        color: #fff;
+    }
+
+    td{
+        padding: 10px 0px 10px 16px !important;
+    }
+}
+
