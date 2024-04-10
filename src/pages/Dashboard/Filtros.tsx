@@ -45,13 +45,13 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
     }
 
     useEffect(() => {
-        axios.get(`${url.baseURL}/data/products`).then((res) => {
+        axios.get(`${url.baseURL}/products/allProducts`).then((res) => {
             const products = res.data;
-        
+
             const categoriesList: { id: string, name: string, catId: number }[] = [];
             const productsList: { id: string, name: string, catId: number }[] = [];
         
-            products.forEach((p: any, index: number) => {
+            products.forEach((p: any, index: number) => {       
                 const cat = categoriesList.some(category => category.name === p.category);
         
                 if (!cat) {
@@ -61,7 +61,7 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
                         catId: 2
                     });
                 }
-        
+
                 const prod = productsList.some(product => product.name === p.name);
         
                 if (!prod) {
@@ -76,7 +76,7 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
             const options = [...categoriesList, ...productsList];
         
             setOptionsList(options);
-        });          
+        })         
     }, [])
 
     return (
