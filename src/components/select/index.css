@@ -19,7 +19,10 @@
 .p-inputtext {
     height: 30px;
     padding: 7px;
-    text-indent: -8px !important;
+}
+
+span.p-dropdown-label.p-inputtext {
+    text-indent: -8px;
 }
 
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item,

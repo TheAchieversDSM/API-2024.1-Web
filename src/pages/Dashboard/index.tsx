@@ -1,13 +1,12 @@
 import { Sidebar } from '../../components/sidebar'
+import { Filters } from '../../interfaces/filters'
 import Container from '../../components/container'
-import Avaliacoes from './charts/avaliacoes';
-import Temas from './charts/temas';
-import Tags from './charts/tags';
-import { useState } from 'react';
-import Filtros from './filtros';
-import './index.css';
-import { Filters } from '../../interfaces/filters';
-
+import Avaliacoes from './charts/avaliacoes'
+import Temas from './charts/temas'
+import Tags from './charts/tags'
+import { useState } from 'react'
+import Filtros from './Filtros'
+import './index.css'
 
 export default function Dashboard() {
     const [filters, setFilters] = useState<Filters>({
