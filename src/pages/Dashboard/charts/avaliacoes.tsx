@@ -1,11 +1,13 @@
 import { Filters } from '../../../interfaces/filters';
 import { useState, useEffect } from 'react';
+import url from '../../../services/config';
 import Box from '../../../components/box';
 import { Chart } from 'primereact/chart';
+import axios from 'axios';
 
 export default function Avaliacoes({ filters }: { filters: Filters }) {
-    const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
+    const [chartData, setChartData] = useState({});
     let labels: string[] = []
 
     // labels ✨
@@ -95,7 +97,7 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
 
     useEffect(() => {
         updateChart(filters);
-    }, [filters])
+    }, [filters])    
 
     return (
         <Box titulo="Avaliações">

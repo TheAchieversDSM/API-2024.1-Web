@@ -4,7 +4,9 @@ import Datepicker from "../../components/datepicker";
 import { Filters } from "../../interfaces/filters";
 import Select from '../../components/select';
 import Btn from "../../components/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import url from "../../services/config";
 
 type FilterChangeHandler = (filters: Filters) => void;
 
@@ -15,20 +17,13 @@ interface FiltrosProps {
 export default function Filtros({ onFilterChange }: FiltrosProps) {
     const [category, setCategory] = useState<{ id: string, name: string }>();
     const [categories, setCategories] = useState<{ id: string, name: string }[]>([]);
+    const [optionsList, setOptionsList] = useState<{ id: string, name: string, catId: number }[]>([]);
     const [options, setOptions] = useState<{ id: string, name: string, catId: number }[]>([]);
-    const [date, setDate] = useState<DateRange | undefined>();
+    const [date, setDate] = useState<DateRange | undefined>();    
 
     const categoriesList = [
         { name: 'Produtos', id: '1' },
         { name: 'Categorias', id: '2' }
-    ];
-
-    const optionsList = [
-        { name: 'Categoria 1', id: '1', catId: 2 },
-        { name: 'Categoria 2', id: '2', catId: 2 },
-        { name: 'Categoria 3', id: '3', catId: 2 },
-        { name: 'Produto 1', id: '4', catId: 1 },
-        { name: 'Produto 2', id: '5', catId: 1 }
     ];
 
     function handleShortcut(shortcut: any) {
@@ -49,6 +44,41 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
         }
     }
 
+    useEffect(() => {
+        axios.get(`${url.baseURL}/products/allProducts`).then((res) => {
+            const products = res.data;
+
+            const categoriesList: { id: string, name: string, catId: number }[] = [];
+            const productsList: { id: string, name: string, catId: number }[] = [];
+        
+            products.forEach((p: any, index: number) => {       
+                const cat = categoriesList.some(category => category.name === p.category);
+        
+                if (!cat) {
+                    categoriesList.push({
+                        id: index.toString(),
+                        name: p.category,
+                        catId: 2
+                    });
+                }
+
+                const prod = productsList.some(product => product.name === p.name);
+        
+                if (!prod) {
+                    productsList.push({
+                        id: p.id,
+                        name: p.name,
+                        catId: 1
+                    });
+                }
+            });
+        
+            const options = [...categoriesList, ...productsList];
+        
+            setOptionsList(options);
+        })         
+    }, [])
+
     return (
         <>
             <div className="filters-container">
@@ -65,10 +95,10 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
                     options={categoriesList}
                     name={'Grupo'}
                     placeholder={'Selecione o grupo'}
-                    onChange={(e) => { 
-                        if (e.value) { 
-                            setCategories(e.value); 
-                            setCategory({name: e.value.name, id: e.value.id});
+                    onChange={(e) => {
+                        if (e.value) {
+                            setCategories(e.value);
+                            setCategory({ name: e.value.name, id: e.value.id });
                         } else {
                             setCategories([]);
                             setCategory(undefined);
@@ -90,7 +120,7 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
                     label="Buscar"
                     icon='pi pi-search'
                     onClick={() => {
-                        console.log(date, categories, options); onFilterChange({ dateRange: date, categories, selectedOptions: options });
+                        onFilterChange({ dateRange: date, categories, selectedOptions: options });
                     }}
                 />
             </div>
