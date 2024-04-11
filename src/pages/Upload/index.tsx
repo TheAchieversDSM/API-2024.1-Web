@@ -15,26 +15,9 @@ export default function Upload() {
 
     const onUpload = async (event: any) => {
         const file = event.files[0];
-        const formData = new FormData();
-        formData.append('file', file);
-        console.log(formData);
-        try {
-            const response = await axios.post(`${url.baseURL}/base-importer/import`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-
-            if (response.status === 200) {
-                setUploadedFile(file);
-                if (toast.current) { 
-                    toast.current.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
-                }
-            } else {
-                console.log("Erro de upload")
-            }
-        } catch (error) {
-            console.error('Error uploading file:', error);
+        setUploadedFile(file);
+        if (toast.current) { 
+            toast.current.show({ severity: 'info', summary: 'Success', detail: 'Upload do arquivo realizado com sucesso!' });
         }
     };
 
