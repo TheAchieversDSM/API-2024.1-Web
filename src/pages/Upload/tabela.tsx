@@ -36,7 +36,7 @@ export default function TabelaUpload(){
     return(
         <>
             <div className="cont-table">
-                <DataTable value={file} stripedRows tableStyle={{ minWidth: '50rem' }} size={"normal"}>
+                <DataTable value={file} stripedRows paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }} size={"normal"}>
                     <Column field="createdAt" header="Data da importação"></Column>
                     <Column field="fileName" header="Nome do arquivo"></Column>
                     <Column field="status" header="Status"></Column>
