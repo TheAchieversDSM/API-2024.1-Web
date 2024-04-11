@@ -9,6 +9,7 @@ export default function Multiselect(props: ISelect) {
             
             <MultiSelect
                 value={props.value}
+                onFilter={props.onFilter}
                 options={props.options}
                 onChange={props.onChange}
                 optionLabel='name'
