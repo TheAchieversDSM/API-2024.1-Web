@@ -19,7 +19,7 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
     const [categories, setCategories] = useState<{ id: string, name: string }[]>([]);
     const [optionsList, setOptionsList] = useState<{ id: string, name: string, catId: number }[]>([]);
     const [options, setOptions] = useState<{ id: string, name: string, catId: number }[]>([]);
-    const [date, setDate] = useState<DateRange | undefined>();    
+    const [date, setDate] = useState<DateRange | undefined>();
 
     const categoriesList = [
         { name: 'Produtos', id: '1' },
@@ -45,38 +45,34 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
     }
 
     useEffect(() => {
+        axios.get(`${url.baseURL}/products/categories`).then((res) => {
+            const categories = res.data;
+
+            const categoriesList = categories.map((c: string, index: number) => ({
+                id: index.toString(),
+                name: c,
+                catId: 2
+            }));
+
+            setOptionsList(categoriesList);
+        });
+
         axios.get(`${url.baseURL}/products/allProducts`).then((res) => {
             const products = res.data;
 
-            const categoriesList: { id: string, name: string, catId: number }[] = [];
-            const productsList: { id: string, name: string, catId: number }[] = [];
-        
-            products.forEach((p: any, index: number) => {       
-                const cat = categoriesList.some(category => category.name === p.category);
-        
-                if (!cat) {
-                    categoriesList.push({
-                        id: index.toString(),
-                        name: p.category,
-                        catId: 2
-                    });
-                }
+            const productsList = products.filter((p: any, index: number, self: any) =>
+                index === self.findIndex((t: any) => (
+                    t.name === p.name
+                )))
+                .map((p: any) => ({
+                    id: p.id,
+                    name: p.name,
+                    catId: 1
+                }))
+                .sort((a: any, b: any) => a.name.localeCompare(b.name))
 
-                const prod = productsList.some(product => product.name === p.name);
-        
-                if (!prod) {
-                    productsList.push({
-                        id: p.id,
-                        name: p.name,
-                        catId: 1
-                    });
-                }
-            });
-        
-            const options = [...categoriesList, ...productsList];
-        
-            setOptionsList(options);
-        })         
+            setOptionsList(prev => [...prev, ...productsList]);
+        });
     }, [])
 
     return (
