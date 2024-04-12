@@ -5,9 +5,16 @@ import Box from '../../../components/box';
 import { Chart } from 'primereact/chart';
 import axios from 'axios';
 
+interface IOption {
+    id: string,
+    name: string,
+    catId: number
+}
+
 export default function Avaliacoes({ filters }: { filters: Filters }) {
     const [chartOptions, setChartOptions] = useState({});
     const [chartData, setChartData] = useState({});
+    const [values, setValues] = useState([])
     let labels: string[] = []
 
     // labels ✨
@@ -31,19 +38,38 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
     const datasets = filters.selectedOptions.map((option, index) => {
         return {
             label: option.name,
-            data: generateRandomData(),
+            data: option.catId === 2 ? generateRandomData(option.name, option.catId) : generateRandomData(option.id, option.catId),
             fill: false,
             borderColor: getRandomColor(index),
             tension: 0.4
         };
-    });
+    });    
 
-    function generateRandomData() {
-        const data = [];
-        for (let i = 0; i < labels.length; i++) {
-            data.push(Math.floor(Math.random() * 100));
+    function generateRandomData(id: string, catId: number) {
+        if (catId === 2) {
+            axios.get(`${url.baseURL}/products/averageRatingByCategory/${id}`).then((res) => {
+                let values = res.data
+                const data: any = [];
+
+                const dateValueMap: Record<string, number> = {};
+                values.forEach((d: any) => {
+                    const date = new Date(d.date).toLocaleDateString('pt-br');
+                    dateValueMap[date] = d.averageRating;
+                });
+
+                labels.forEach((label: string) => {
+                    if (dateValueMap[label] !== undefined) {
+                        data.push(dateValueMap[label]);
+                    } else {
+                        data.push(0);
+                    }
+                });
+
+                setValues(data)                
+            })
         }
-        return data;
+        
+        return values
     }
 
     function getRandomColor(index: any) {
@@ -55,7 +81,7 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
         const data = {
             labels: labels,
             datasets: datasets
-        };
+        };        
 
         const options = {
             maintainAspectRatio: false,
@@ -97,7 +123,8 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
 
     useEffect(() => {
         updateChart(filters);
-    }, [filters])    
+        setValues([])
+    }, [filters])
 
     return (
         <Box titulo="Avaliações">
