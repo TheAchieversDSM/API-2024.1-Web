@@ -66,8 +66,6 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
                 const promises = filters.selectedOptions.map(async (option, index) => {
                     let data;
                     if (option.catId === 2) {
-                        console.log('indo');
-
                         data = await generateRandomData(option.name, option.catId);
                     } else {
                         data = await generateRandomData(option.id, option.catId);
@@ -98,8 +96,6 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
             labels: labels,
             datasets: datasets
         }
-
-        console.log('entrou', data);
         
         setChartData(data)
     }
