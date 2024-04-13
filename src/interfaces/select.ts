@@ -1,4 +1,4 @@
-import { MultiSelectChangeEvent } from "primereact/multiselect";
+import { MultiSelectChangeEvent, MultiSelectFilterEvent } from "primereact/multiselect";
 
 export interface ISelect {
     value: { id: string, name: string }[],
@@ -7,5 +7,6 @@ export interface ISelect {
     width?: number,
     placeholder: string,
     maxSelected?: number,
+    onFilter?: ((e: MultiSelectFilterEvent) => void) | undefined,
     onChange: (e: MultiSelectChangeEvent) => void,
 }
