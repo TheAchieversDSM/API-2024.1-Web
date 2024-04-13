@@ -130,12 +130,11 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
                         }
                     })
 
-                    console.log(res.data)
-
-                    const values = res.data
+                    const values = res.data.data
                     const data: any = []
 
                     const dateValueMap: Record<string, number> = {}
+                    
                     values.forEach((d: any) => {
                         const date = formatDate(new Date(d.date))
                         dateValueMap[date] = d.averageRating

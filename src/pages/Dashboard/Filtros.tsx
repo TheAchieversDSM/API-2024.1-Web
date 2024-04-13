@@ -93,7 +93,7 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
     useEffect(() => {
         axios.get(`${url.baseURL}/products/allProducts`).then((res) => {
             const products = res.data
-    
+                        
             const productsList = products.filter((p: any, index: number, self: any) =>
                 index === self.findIndex((t: any) => (
                     t.name === p.name && t.name !== null && t.name !== undefined
