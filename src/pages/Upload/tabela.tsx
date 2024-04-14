@@ -21,7 +21,7 @@ export default function TabelaUpload(){
             .catch(error => {
                 console.error('Erro ao obter dados:', error);
             });
-    }, []);
+    }, [file]);
 
     const formatDateString = (dateString: string) => {
         const date = new Date(dateString);
