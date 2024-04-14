@@ -1,53 +1,114 @@
-import { DateRange } from "rsuite/esm/DateRangePicker";
-import Multiselect from '../../components/multiselect';
-import Datepicker from "../../components/datepicker";
-import { Filters } from "../../interfaces/filters";
-import Select from '../../components/select';
-import Btn from "../../components/button";
-import { useState } from "react";
+import { DateRange } from "rsuite/esm/DateRangePicker"
+import Multiselect from '../../components/multiselect'
+import Datepicker from "../../components/datepicker"
+import { Filters } from "../../interfaces/filters"
+import Select from '../../components/select'
+import Btn from "../../components/button"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import url from "../../services/config"
 
-type FilterChangeHandler = (filters: Filters) => void;
+type FilterChangeHandler = (filters: Filters) => void
 
 interface FiltrosProps {
-    onFilterChange: FilterChangeHandler;
+    onFilterChange: FilterChangeHandler
+}
+
+interface OptionsProps {
+    id: string
+    name: string
+    catId: number
 }
 
 export default function Filtros({ onFilterChange }: FiltrosProps) {
-    const [category, setCategory] = useState<{ id: string, name: string }>();
-    const [categories, setCategories] = useState<{ id: string, name: string }[]>([]);
-    const [options, setOptions] = useState<{ id: string, name: string, catId: number }[]>([]);
-    const [date, setDate] = useState<DateRange | undefined>();
+    const [category, setCategory] = useState<{ id: string, name: string }>()
+    const [categories, setCategories] = useState<{ id: string, name: string }[]>([])
+    const [optionsList, setOptionsList] = useState<OptionsProps[]>([])
+    const [options, setOptions] = useState<OptionsProps[]>([])
+    const [date, setDate] = useState<DateRange | undefined>()
+    const [filteredOptions, setFilteredOptions] = useState<OptionsProps[]>([])
+    const [catLength, setCatLength] = useState<number>()
+    const [searchTerm, setSearchTerm] = useState('')
 
     const categoriesList = [
         { name: 'Produtos', id: '1' },
         { name: 'Categorias', id: '2' }
-    ];
-
-    const optionsList = [
-        { name: 'Categoria 1', id: '1', catId: 2 },
-        { name: 'Categoria 2', id: '2', catId: 2 },
-        { name: 'Categoria 3', id: '3', catId: 2 },
-        { name: 'Produto 1', id: '4', catId: 1 },
-        { name: 'Produto 2', id: '5', catId: 1 }
-    ];
+    ]
 
     function handleShortcut(shortcut: any) {
         if (shortcut.label === 'today') {
-            const today = new Date();
-            setDate([today, today]);
+            const today = new Date()
+            setDate([today, today])
 
         } else if (shortcut.label === 'yesterday') {
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            setDate([yesterday, yesterday]);
+            const yesterday = new Date()
+            yesterday.setDate(yesterday.getDate() - 1)
+            setDate([yesterday, yesterday])
 
         } else if (shortcut.label === 'last7Days') {
-            const endDate = new Date();
-            const startDate = new Date();
-            startDate.setDate(endDate.getDate() - 6);
-            setDate([startDate, endDate]);
+            const endDate = new Date()
+            const startDate = new Date()
+            startDate.setDate(endDate.getDate() - 6)
+            setDate([startDate, endDate])
         }
     }
+
+    const handleSearch = (e: any) => {        
+        const searchTerm = e.filter.toLowerCase();
+        setSearchTerm(searchTerm);
+    
+        if (searchTerm === '') {
+            const length: number = catLength ? catLength + 10 : 10;
+            const list = optionsList.slice(0, length);
+    
+            setFilteredOptions(list);
+        } else {
+            const filtered = optionsList.filter((opt: any) =>
+                opt.name.toLowerCase().includes(searchTerm) ||
+                (opt.category && opt.category.toLowerCase().includes(searchTerm))
+            );
+        
+            setFilteredOptions(filtered);
+        }
+    };
+
+    useEffect(() => {
+        axios.get(`${url.baseURL}/products/categories`).then((res) => {
+            const categories = res.data
+
+            const categoriesList = categories.filter((c: any) =>
+                c !== null && c !== undefined)
+                .map((c: string, index: number) => ({
+                    id: index.toString(),
+                    name: c,
+                    catId: 2
+                }))
+
+            setCatLength(categoriesList.length)
+            setOptionsList(categoriesList)
+            setFilteredOptions(categoriesList)
+        })
+    }, [])
+
+    useEffect(() => {
+        axios.get(`${url.baseURL}/products/allProducts`).then((res) => {
+            const products = res.data
+                        
+            const productsList = products.filter((p: any, index: number, self: any) =>
+                index === self.findIndex((t: any) => (
+                    t.name === p.name && t.name !== null && t.name !== undefined
+                )))
+                .map((p: any) => ({
+                    id: p.id,
+                    name: p.name,
+                    catId: 1
+                }))
+                .sort((a: any, b: any) => a.name.localeCompare(b.name))
+    
+            setOptionsList(prev => [...prev, ...productsList])
+            setFilteredOptions(prev => [...prev, ...productsList.slice(0, 10)])            
+        })
+    }, [catLength])    
 
     return (
         <>
@@ -56,6 +117,7 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
                     placeholder={"Selecione uma data"}
                     value={date}
                     onShortcut={handleShortcut}
+                    onClean={() => setDate(undefined)}
                     onOk={(date: any) => setDate(date)}
                 />
 
@@ -64,20 +126,21 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
                     options={categoriesList}
                     name={'Grupo'}
                     placeholder={'Selecione o grupo'}
-                    onChange={(e) => { 
-                        if (e.value) { 
-                            setCategories(e.value); 
-                            setCategory({name: e.value.name, id: e.value.id});
+                    onChange={(e) => {
+                        if (e.value) {
+                            setCategories(e.value)
+                            setCategory({ name: e.value.name, id: e.value.id })
                         } else {
-                            setCategories([]);
-                            setCategory(undefined);
+                            setCategories([])
+                            setCategory(undefined)
                         }
                     }}
                 />
 
                 <Multiselect
                     value={options}
-                    options={category ? optionsList.filter(option => option.catId === parseInt(category.id)) : optionsList}
+                    onFilter={handleSearch}
+                    options={category ? filteredOptions.filter(option => option.catId === parseInt(category.id)) : filteredOptions}
                     name={'Opções'}
                     placeholder={'Selecione as opções'}
                     width={300}
@@ -89,7 +152,7 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
                     label="Buscar"
                     icon='pi pi-search'
                     onClick={() => {
-                        console.log(date, categories, options); onFilterChange({ dateRange: date, categories, selectedOptions: options });
+                        onFilterChange({ dateRange: date, categories, selectedOptions: options })
                     }}
                 />
             </div>

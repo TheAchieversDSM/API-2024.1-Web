@@ -9,11 +9,13 @@ export default function Multiselect(props: ISelect) {
             
             <MultiSelect
                 value={props.value}
+                onFilter={props.onFilter}
                 options={props.options}
                 onChange={props.onChange}
                 optionLabel='name'
                 filter placeholder={props.placeholder}
                 maxSelectedLabels={props.maxSelected}
+                selectedItemsLabel='{0} itens selecionados'
                 showClear
                 style={{ width: props.width || '250px' }}
             />

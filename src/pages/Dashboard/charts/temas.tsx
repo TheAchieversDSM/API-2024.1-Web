@@ -1,5 +1,5 @@
 import Box from "../../../components/box";
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Chart } from 'primereact/chart';
 
 export default function Temas() {
