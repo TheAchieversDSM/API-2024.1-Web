@@ -26,7 +26,7 @@ export default function Dashboard() {
                         <Avaliacoes filters={ filters }/>
                         <section className='bottom-charts'>
                             <Tags filters={ filters }/>
-                            <Temas />
+                            <Temas filters={ filters }/>
                         </section>
                     </div>
                 </div>

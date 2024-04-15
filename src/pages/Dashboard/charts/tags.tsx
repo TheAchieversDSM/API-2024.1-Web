@@ -17,7 +17,7 @@ export default function Tags({ filters }: { filters: Filters }) {
         if (isFilterSelected) {
             const formattedOptions = filters.selectedOptions.map(option => option.name.replace(/\s/g, '')).join(',');
 
-            fetch(`http://localhost:1313/summary/getAllByCategories/${formattedOptions}`)
+            fetch(`http://localhost:1313/summary/getAllByCategories/tag/${formattedOptions}`)
                 .then(response => response.json())
                 .then(data => {
                     const labelsSet = new Set<string>();
@@ -50,6 +50,7 @@ export default function Tags({ filters }: { filters: Filters }) {
                                     "#3FC5FA",
                                     "#5C96F7",
                                     "#4F88DB",
+                                    "#2b63b6"
                                 ],
                                 data: dataValues
                             },
