@@ -25,8 +25,8 @@ export default function Dashboard() {
                     <div className='flex-container'>
                         <Avaliacoes filters={ filters }/>
                         <section className='bottom-charts'>
-                            <Tags />
-                            <Temas />
+                            <Tags filters={ filters }/>
+                            <Temas filters={ filters }/>
                         </section>
                     </div>
                 </div>
