@@ -1,0 +1,10 @@
+.p-input-icon-left > i, 
+.p-input-icon-right > i, 
+.p-input-icon-left > svg, 
+.p-input-icon-right > svg, 
+.p-input-icon-left > .p-input-prefix, 
+.p-input-icon-right > .p-input-suffix {
+    position: relative;
+    top: 20px;
+    right: 25px;
+}
