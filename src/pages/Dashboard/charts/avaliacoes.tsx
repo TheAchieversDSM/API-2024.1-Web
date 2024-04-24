@@ -201,12 +201,22 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
     }
 
     function getRandomColor(index: any) {
-        const colors = ['#3BAEDA', '#BC6CDD', '#FF5733', '#FFC300', '#FF33E9', '#33FF7D', '#3388FF']
+        const colors = [
+            "#C47F44",
+            "#D78C4B",
+            "#DFA36F",
+            "#E4B286",
+            "#8FA9B9",
+            "#5C8198",
+            "#3C6985",
+            "#0B4366",
+            "#0A3D5D", 
+        ]
         return colors[index % colors.length]
     }
 
     return (
-        <Box titulo="Avaliações">
+        <Box titulo="Média de avaliações">
             <Chart type="line" data={chartData} options={chartOptions} />
         </Box>
     )
