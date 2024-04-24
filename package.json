@@ -16,7 +16,7 @@
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.2",
     "primeicons": "5.0.0",
-    "primereact": "^10.6.2",
+    "primereact": "^10.6.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
