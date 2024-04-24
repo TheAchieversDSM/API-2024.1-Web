@@ -7,6 +7,7 @@ import Tags from './charts/tags'
 import { useState } from 'react'
 import Filtros from './Filtros'
 import './index.css'
+import Demografia from './charts/demografia'
 
 export default function Dashboard() {
     const [filters, setFilters] = useState<Filters>({
@@ -27,6 +28,9 @@ export default function Dashboard() {
                         <section className='bottom-charts'>
                             <Tags filters={ filters }/>
                             <Temas filters={ filters }/>
+                        </section>
+                        <section className='demografico-charts'>
+                            <Demografia/>
                         </section>
                     </div>
                 </div>
