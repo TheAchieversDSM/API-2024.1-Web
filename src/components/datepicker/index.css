@@ -46,3 +46,7 @@
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
 }
+
+.div-datepicker{
+    width: 250px !important;
+}

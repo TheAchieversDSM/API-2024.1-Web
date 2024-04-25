@@ -7,7 +7,7 @@ import './index.css'
 
 export default function Datepicker(props: IDatepicker) {
     return (
-        <div className='card flex justify-content-center'>
+        <div className='card flex justify-content-center div-datepicker'>
             <span>Data</span>
 
             <IntlProvider locale="pt-BR">

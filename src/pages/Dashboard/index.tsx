@@ -11,8 +11,9 @@ import './index.css'
 export default function Dashboard() {
     const [filters, setFilters] = useState<Filters>({
         dateRange: undefined,
-        categories: [],
-        selectedOptions: []
+        categories: {id: '', name: ''},
+        selectedOptions: [],
+        estado: {id: '', name: ''},
     })   
 
     return (

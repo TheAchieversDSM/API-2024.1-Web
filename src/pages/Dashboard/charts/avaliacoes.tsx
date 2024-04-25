@@ -96,7 +96,7 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
             labels: labels,
             datasets: datasets
         }
-        
+        console.log(data)
         setChartData(data)
     }
 
