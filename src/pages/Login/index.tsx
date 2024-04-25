@@ -1,22 +1,28 @@
-import { ChangeEvent, MouseEvent, useState } from 'react';
-import logo from '../../assets/imgs/logo.jpeg';
-import Input from '../../components/input';
+import InputPassword from '../../components/password'
+import { useNavigate } from "react-router-dom"
+import logo from '../../assets/imgs/logo.jpeg'
+import Input from '../../components/input'
+import Btn from '../../components/button'
+import { useState } from 'react'
 import './index.css'
-import InputPassword from '../../components/password';
-import Btn from '../../components/button';
 
 export default function Login() {
     const [email, setEmail] = useState<string>('')
     const [pwd, setPwd] = useState<string>('')
+    const navigate = useNavigate();
 
     function setEmailValue(e: any) {
         setEmail(e.target.value)
-        console.log(e.target.value);
+        console.log(e.target.value)
     }
 
     function setPwdValue(e: any) {
         setPwd(e.target.value)
-        console.log(e.target.value);
+        console.log(e.target.value)
+    }
+
+    function login() {
+        navigate("/dashboard")
     }
 
     return (
@@ -39,7 +45,7 @@ export default function Login() {
 
                     <Btn 
                     label={'Entrar'} 
-                    onClick={() => console.log('oi')}     
+                    onClick={() => login()}     
                     width={375}
                     bg='linear-gradient(to bottom right, #D78C4B, #764D29)'
                     />
