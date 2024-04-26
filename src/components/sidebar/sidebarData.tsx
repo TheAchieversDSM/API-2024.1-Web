@@ -20,5 +20,11 @@ export const SidebarData = [
     path: '/cadastro-usuarios',
     icon: <LuIcons.LuUserPlus size={40} />,
     cName:'nav-text'
+  },
+  {
+    title: 'Sair',
+    path: '',
+    icon: <LuIcons.LuLogOut size={22} />,
+    cName: 'nav-text logout-text'
   }
 ];
