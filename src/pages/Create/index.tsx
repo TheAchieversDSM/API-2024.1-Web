@@ -3,10 +3,12 @@ import Container from "../../components/container";
 import { Sidebar } from "../../components/sidebar";
 import { useEffect, useState } from "react";
 import Input from "../../components/input";
+import { useNavigate } from "react-router";
 import Btn from "../../components/button";
 import Box from "../../components/box";
 import Swal from 'sweetalert2'
 import './index.css'
+import isAuthenticated from "../../utils/auth";
 
 interface IError {
     email?: boolean,
@@ -15,6 +17,8 @@ interface IError {
 }
 
 export default function CreateUser() {
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState<string>('')
     const [name, setName] = useState<string>('')
     const [pwd, setPwd] = useState<string>('')
@@ -101,6 +105,14 @@ export default function CreateUser() {
             icon: "success"
         });
     }
+
+    useEffect(() => {
+        const auth = isAuthenticated()      
+
+        if (auth === false) {
+            navigate('/')
+        }
+    })
 
     return (
         <>
