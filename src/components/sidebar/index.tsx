@@ -5,6 +5,10 @@ import { IconContext } from 'react-icons';
 import './index.css';
 
 export function Sidebar() {
+    function handleLogout() {
+        localStorage.removeItem("token");
+    }
+
     return (
         <>
             <IconContext.Provider value={{ color: '#fff' }}>
@@ -15,10 +19,17 @@ export function Sidebar() {
                         {SidebarData.map((item, index) => {
                             return (
                                 <li key={index} className={item.cName} style={{ marginBottom: '-20px' }}>
-                                    <Link to={item.path}>
-                                        {item.icon}
-                                        <span>{item.title}</span>
-                                    </Link>
+                                    {item.path === '' ? (
+                                        <Link to={item.path} onClick={() => handleLogout()}>
+                                            {item.icon}
+                                            <span>{item.title}</span>
+                                        </Link>
+                                    ) : (
+                                        <Link to={item.path}>
+                                            {item.icon}
+                                            <span>{item.title}</span>
+                                        </Link>
+                                    )}
                                 </li>
                             );
                         })}

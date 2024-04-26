@@ -3,10 +3,14 @@ import Container from "../../components/container";
 import { Sidebar } from "../../components/sidebar";
 import { useEffect, useState } from "react";
 import Input from "../../components/input";
+import { useNavigate } from "react-router";
 import Btn from "../../components/button";
 import Box from "../../components/box";
 import Swal from 'sweetalert2'
 import './index.css'
+import isAuthenticated from "../../utils/auth";
+import axios from "axios";
+import url from "../../services/config";
 
 interface IError {
     email?: boolean,
@@ -15,6 +19,8 @@ interface IError {
 }
 
 export default function CreateUser() {
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState<string>('')
     const [name, setName] = useState<string>('')
     const [pwd, setPwd] = useState<string>('')
@@ -90,17 +96,37 @@ export default function CreateUser() {
             return;
         }
 
-        setEmail('');
-        setName('');
-        setPwd('');
-        setPwdConf('');
+        axios.post(`${url.baseURL}/users/signup`, {
+            name: name,
+            email: email,
+            password: pwd
+        }).then(() => {
+            setEmail('');
+            setName('');
+            setPwd('');
+            setPwdConf('');
 
-        Swal.fire({
-            title: "Usuário cadastrado!",
-            text: `O usuário ${name} foi cadastrado com sucesso.`,
-            icon: "success"
-        });
+            Swal.fire({
+                title: "Usuário cadastrado!",
+                text: `O usuário ${name} foi cadastrado com sucesso.`,
+                icon: "success"
+            });
+        }).catch((e) => {
+            Swal.fire({
+                title: "Email já cadastrado!",
+                text: `Email ${email} já cadastrado, tente outro.`,
+                icon: "error"
+            });
+        })
     }
+
+    useEffect(() => {
+        const auth = isAuthenticated()
+
+        if (auth === false) {
+            navigate('/')
+        }
+    })
 
     return (
         <>
