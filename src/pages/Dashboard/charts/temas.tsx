@@ -41,15 +41,15 @@ export default function Temas({ filters }: { filters: Filters }) {
                             {
                                 label: 'Quantidade',
                                 backgroundColor: [
-                                    "#E97947",
-                                    "#FF8556",
-                                    "#FF9F75",
-                                    "#FFC160",
-                                    "#6AD1FC",
-                                    "#3FC5FA",
-                                    "#5C96F7",
-                                    "#4F88DB",
-                                    "#2b63b6"
+                                    "#C47F44",
+                                    "#D78C4B",
+                                    "#DFA36F",
+                                    "#E4B286",
+                                    "#8FA9B9",
+                                    "#5C8198",
+                                    "#3C6985",
+                                    "#0B4366",
+                                    "#0A3D5D", 
                                 ],
                                 data: dataValues
                             },
@@ -82,7 +82,7 @@ export default function Temas({ filters }: { filters: Filters }) {
     }, []);
     return(
         <>
-            <Box titulo="Temas">
+            <Box titulo="Temas por tags">
                 <div className="chart-div" style={{ width: '25vw'}}>
                     <Chart type="pie" data={chartData} options={chartOptions} style={{height: '35vh'}} />
                 </div>
