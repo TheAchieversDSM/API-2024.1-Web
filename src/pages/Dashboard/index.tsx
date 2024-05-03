@@ -13,7 +13,7 @@ export default function Dashboard() {
         dateRange: undefined,
         categories: {id: '', name: ''},
         selectedOptions: [],
-        estado: {id: '', name: ''},
+        estado: {id: ''},
     })   
 
     return (

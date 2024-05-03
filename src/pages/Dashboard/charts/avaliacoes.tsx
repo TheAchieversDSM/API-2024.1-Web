@@ -66,9 +66,9 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
                 const promises = filters.selectedOptions.map(async (option, index) => {
                     let data;
                     if (option.catId === 2) {
-                        data = await generateRandomData(option.name, option.catId);
+                        data = await generateRandomData(option.name, option.catId, filters.estado);
                     } else {
-                        data = await generateRandomData(option.id, option.catId);
+                        data = await generateRandomData(option.id, option.catId, filters.estado);
                     }
 
                     return {
@@ -112,83 +112,45 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
         return labels
     }
 
-    async function generateRandomData(id: string, catId: number) {
-        if (catId === 2) {
-            try {
-                if (filters.dateRange) {
-                    const formattedStartDate = new Date(filters.dateRange[0]).toISOString().slice(0, 10)
-                    const formattedEndDate = new Date(filters.dateRange[1]).toISOString().slice(0, 10)
-
-                    const res = await axios.get(`${url.baseURL}/products/averageRatingByCategory/${id}`, {
-                        params: {
-                            "startDate": formattedStartDate,
-                            "endDate": formattedEndDate
-                        }
-                    })
-
-                    const values = res.data.data
-                    const data: any = []
-
-                    const dateValueMap: Record<string, number> = {}
-                    
-                    values.forEach((d: any) => {
-                        const date = formatDate(new Date(d.date))
-                        dateValueMap[date] = d.averageRating
-                    })
-
-                    labels.forEach((label: string) => {
-                        if (dateValueMap[label] !== undefined) {
-                            data.push(dateValueMap[label])
-                        } else {
-                            data.push(0)
-                        }
-                    })
-
-                    return data
-                }
-            } catch (error) {
-                console.error('Erro ao obter dados da API:', error)
-                return []
+    async function generateRandomData(id: string, catId: number, stateId: any) {
+        try {
+            if (filters.dateRange) {
+                const formattedStartDate = new Date(filters.dateRange[0]).toISOString().slice(0, 10)
+                const formattedEndDate = new Date(filters.dateRange[1]).toISOString().slice(0, 10)
+    
+                const res = await axios.get(`${url.baseURL}/products/averageRatingByState/${stateId}/${id}`, {
+                    params: {
+                        "startDate": formattedStartDate,
+                        "endDate": formattedEndDate
+                    }
+                })
+    
+                const values = res.data.averageResponse; // Ajustado para acessar res.data.averageResponse
+    
+                const data: any = []
+    
+                const dateValueMap: Record<string, number> = {}
+    
+                values.forEach((d: any) => {
+                    const date = formatDate(new Date(d.date))
+                    dateValueMap[date] = d.averageRating
+                })
+    
+                labels.forEach((label: string) => {
+                    if (dateValueMap[label] !== undefined) {
+                        data.push(dateValueMap[label])
+                    } else {
+                        data.push(0)
+                    }
+                })
+    
+                return data
             }
+        } catch (error) {
+            console.error('Erro ao obter dados da API:', error)
+            return []
         }
-        else {
-            try {
-                if (filters.dateRange) {
-                    const formattedStartDate = new Date(filters.dateRange[0]).toISOString().slice(0, 10)
-                    const formattedEndDate = new Date(filters.dateRange[1]).toISOString().slice(0, 10)
-
-                    const res = await axios.get(`${url.baseURL}/products/averageRating/${id}`, {
-                        params: {
-                            "startDate": formattedStartDate,
-                            "endDate": formattedEndDate
-                        }
-                    })
-
-                    const values = res.data
-                    const data: any = []
-
-                    const dateValueMap: Record<string, number> = {}
-
-                    values.forEach((d: any) => {
-                        const date = formatDate(new Date(d.date))
-                        dateValueMap[date] = d.averageRating
-                    })
-
-                    labels.forEach((label: string) => {
-                        if (dateValueMap[label] !== undefined) {
-                            data.push(dateValueMap[label])
-                        } else {
-                            data.push(0)
-                        }
-                    })
-
-                    return data
-                }
-            } catch (error) {
-                console.error('Erro ao obter dados da API:', error)
-                return []
-            }
-        }
+    
 
         return []
     }

@@ -142,9 +142,9 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
                     value={estadoSelected}
                     options={estados}
                     name={'Estado'}
-                    placeholder={''}
-                    onChange={(e) => setEstadoSelected(e.value)}
-                    width={100}
+                    placeholder={'Selecione'}
+                    onChange={(e) => setEstadoSelected(e.value.id)}
+                    width={130}
                 />
 
                 <Datepicker
