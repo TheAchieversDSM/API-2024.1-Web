@@ -19,6 +19,11 @@ img {
   left: 0;
 }
 
+.logout-text {
+  position: absolute;
+  bottom: 40px;
+}
+
 .nav-text {
   margin-top: 20px;
   display: flex;

@@ -8,6 +8,7 @@ export default function Btn(props: IButton) {
             label={props.label} 
             icon={props.icon} 
             onClick={props.onClick}
+            disabled={props.disabled || false}
             style={{ 
                 width: props.width || '140px', 
                 height: props.height || '46px',
