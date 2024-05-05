@@ -31,7 +31,7 @@ export default function Dashboard() {
                             <Temas filters={ filters }/>
                         </section>
                         <section className='demografico-charts'>
-                            <Demografia/>
+                            <Demografia filters={ filters }/>
                         </section>
                     </div>
                 </div>

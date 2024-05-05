@@ -110,8 +110,8 @@ export default function Tags({ filters }: { filters: Filters }) {
     return(
         <>
             <Box titulo="Sumário por tags">
-                <div className="card flex justify-content-center" style={{ width: '40vw'}}>
-                    <Chart type="bar" data={chartData} options={chartOptions} style={{height: '33vh'}}/>
+                <div className="card flex justify-content-center" >
+                    <Chart type="bar" data={chartData} options={chartOptions} style={{height: '40vh', width: '35vw'}}/>
                 </div>
             </Box>
         </>
