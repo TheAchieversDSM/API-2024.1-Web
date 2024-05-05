@@ -14,7 +14,15 @@ export default function Temas({ filters }: { filters: Filters }) {
 
     useEffect(() => {
         if (isFilterSelected) {
-            const formattedOptions = filters.selectedOptions.map(option => option.name.replace(/\s/g, '')).join(',');
+            let formattedOptions = '';
+
+            if (Array.isArray(filters.categories)) {
+                formattedOptions = filters.categories.map(option => `${option.name}`).join(', ');
+            } else {
+                formattedOptions = `${filters.categories.name}`;
+            }
+
+            console.log(formattedOptions)
 
             fetch(`http://localhost:1313/summary/getAllByCategories/comments/${formattedOptions}`)
                 .then(response => response.json())
@@ -62,7 +70,7 @@ export default function Temas({ filters }: { filters: Filters }) {
                     console.error('Erro ao chamar a rota:', error);
                 });
         }
-    }, [isFilterSelected]);
+    }, [isFilterSelected, filters]);
 
     useEffect(() => {
         const documentStyle = getComputedStyle(document.documentElement);

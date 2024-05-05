@@ -125,7 +125,7 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
                     .map((p: any) => ({
                         id: p.id,
                         name: p.name,
-                        catId: 1
+                        catId: p.category
                     }))
                     .sort((a: any, b: any) => a.name.localeCompare(b.name));
     
