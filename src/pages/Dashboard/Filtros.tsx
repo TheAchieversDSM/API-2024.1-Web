@@ -21,19 +21,46 @@ interface OptionsProps {
 }
 
 export default function Filtros({ onFilterChange }: FiltrosProps) {
-    const [category, setCategory] = useState<{ id: string, name: string }>()
-    const [categories, setCategories] = useState<{ id: string, name: string }[]>([])
-    const [optionsList, setOptionsList] = useState<OptionsProps[]>([])
-    const [options, setOptions] = useState<OptionsProps[]>([])
-    const [date, setDate] = useState<DateRange | undefined>()
-    const [filteredOptions, setFilteredOptions] = useState<OptionsProps[]>([])
-    const [catLength, setCatLength] = useState<number>()
-    const [searchTerm, setSearchTerm] = useState('')
+    const [estadoSelected, setEstadoSelected] = useState<{ id: string, name: string }[]>([]);
 
-    const categoriesList = [
-        { name: 'Produtos', id: '1' },
-        { name: 'Categorias', id: '2' }
+    const [categorias, setCategorias] = useState<{ id: string, name: string }[]>([]);
+    const [categoriaSelected, setCategoriaSelected] = useState<{ id: string, name: string }>({ id: '', name: '' });
+
+    const [produtosList, setProdutosList] = useState<OptionsProps[]>([]);
+    const [produtos, setProdutos] = useState<OptionsProps[]>([]);
+
+    const [date, setDate] = useState<DateRange | undefined>();
+
+    const estados = [
+        { id: 'AC', name: 'Acre'},
+        { id: 'AL', name: 'Alagoas'},
+        { id: 'AP', name: 'Amapá'},
+        { id: 'AM', name: 'Amazonas'},
+        { id: 'BA', name: 'Bahia'},
+        { id: 'CE', name: 'Ceará'},
+        { id: 'ES', name: 'Espírito Santo'},
+        { id: 'GO', name: 'Goiás'},
+        { id: 'MA', name: 'Maranhão'},
+        { id: 'MT', name: 'Mato Grosso'},
+        { id: 'MS', name: 'Mato Grosso do Sul'},
+        { id: 'MG', name: 'Minas Gerais'},
+        { id: 'PA', name: 'Pará'},
+        { id: 'PR', name: 'Paraná'},
+        { id: 'PE', name: 'Pernambuco'},
+        { id: 'PI', name: 'Piauí'},
+        { id: 'RJ', name: 'Rio de Janeiro'},
+        { id: 'RN', name: 'Rio Grande do Norte'},
+        { id: 'RS', name: 'Rio Grande do Sul'},
+        { id: 'RO', name: 'Rondônia'},
+        { id: 'RR', name: 'Roraima'},
+        { id: 'SC', name: 'Santa Catarina'},
+        { id: 'SP', name: 'São Paulo'},
+        { id: 'SE', name: 'Sergipe'},
+        { id: 'TO', name: 'Tocantins'},
+        { id: 'DF', name: 'Distrito Federal'},
     ]
+
+    // const [searchTerm, setSearchTerm] = useState('');
 
     function handleShortcut(shortcut: any) {
         if (shortcut.label === 'today') {
@@ -53,66 +80,73 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
         }
     }
 
-    const handleSearch = (e: any) => {        
-        const searchTerm = e.filter.toLowerCase();
-        setSearchTerm(searchTerm);
+    // const handleSearch = (e: any) => {        
+    //     const searchTerm = e.filter.toLowerCase();
+    //     setSearchTerm(searchTerm);
     
-        if (searchTerm === '') {
-            const length: number = catLength ? catLength + 10 : 10;
-            const list = optionsList.slice(0, length);
+    //     if (searchTerm === '') {
+    //         const length: number = catLength ? catLength + 10 : 10;
+    //         const list = optionsList.slice(0, length);
     
-            setFilteredOptions(list);
-        } else {
-            const filtered = optionsList.filter((opt: any) =>
-                opt.name.toLowerCase().includes(searchTerm) ||
-                (opt.category && opt.category.toLowerCase().includes(searchTerm))
-            );
+    //         setFilteredOptions(list);
+    //     } else {
+    //         const filtered = optionsList.filter((opt: any) =>
+    //             opt.name.toLowerCase().includes(searchTerm) ||
+    //             (opt.category && opt.category.toLowerCase().includes(searchTerm))
+    //         );
         
-            setFilteredOptions(filtered);
-        }
-    };
+    //         setFilteredOptions(filtered);
+    //     }
+    // };
 
     useEffect(() => {
         axios.get(`${url.baseURL}/products/categories`).then((res) => {
-            const categories = res.data
-
-            const categoriesList = categories.filter((c: any) =>
-                c !== null && c !== undefined)
+            const categories = res.data;
+    
+            const categoriesList = categories
+                .filter((c: any) => c !== null && c !== undefined)
                 .map((c: string, index: number) => ({
                     id: index.toString(),
                     name: c,
-                    catId: 2
                 }))
-
-            setCatLength(categoriesList.length)
-            setOptionsList(categoriesList)
-            setFilteredOptions(categoriesList)
-        })
-    }, [])
+                .slice(1);
+    
+            setCategorias(categoriesList);
+        });
+    }, []);
 
     useEffect(() => {
-        axios.get(`${url.baseURL}/products/allProducts`).then((res) => {
-            const products = res.data
-                        
-            const productsList = products.filter((p: any, index: number, self: any) =>
-                index === self.findIndex((t: any) => (
-                    t.name === p.name && t.name !== null && t.name !== undefined
-                )))
-                .map((p: any) => ({
-                    id: p.id,
-                    name: p.name,
-                    catId: 1
-                }))
-                .sort((a: any, b: any) => a.name.localeCompare(b.name))
+        if (categoriaSelected && categoriaSelected.name) {
+            axios.get(`${url.baseURL}/products/allProducts`).then((res) => {
+                const products = res.data;
     
-            setOptionsList(prev => [...prev, ...productsList])
-            setFilteredOptions(prev => [...prev, ...productsList.slice(0, 10)])            
-        })
-    }, [catLength])    
+                const productsList = products
+                    .filter((p: any) => p.category === categoriaSelected.name && p.name !== null && p.name !== undefined)
+                    .map((p: any) => ({
+                        id: p.id,
+                        name: p.name,
+                        catId: p.category
+                    }))
+                    .sort((a: any, b: any) => a.name.localeCompare(b.name));
+    
+                    console.log(productsList)
+                setProdutos(productsList);
+            });
+        }
+    }, [categoriaSelected]);
 
     return (
         <>
             <div className="filters-container">
+                <Select
+                    value={estadoSelected}
+                    options={estados}
+                    name={'Estado'}
+                    placeholder={'Selecione'}
+                    onChange={(e) => setEstadoSelected(e.value.id)}
+                    width={130}
+                />
+
                 <Datepicker
                     placeholder={"Selecione uma data"}
                     value={date}
@@ -122,37 +156,29 @@ export default function Filtros({ onFilterChange }: FiltrosProps) {
                 />
 
                 <Select
-                    value={categories}
-                    options={categoriesList}
-                    name={'Grupo'}
-                    placeholder={'Selecione o grupo'}
-                    onChange={(e) => {
-                        if (e.value) {
-                            setCategories(e.value)
-                            setCategory({ name: e.value.name, id: e.value.id })
-                        } else {
-                            setCategories([])
-                            setCategory(undefined)
-                        }
-                    }}
+                    value={categoriaSelected}
+                    options={categorias}
+                    name={'Categoria'}
+                    placeholder={'Selecione a categoria'}
+                    onChange={(e) => setCategoriaSelected(e.value)}
+                    width={240}
                 />
 
                 <Multiselect
-                    value={options}
-                    onFilter={handleSearch}
-                    options={category ? filteredOptions.filter(option => option.catId === parseInt(category.id)) : filteredOptions}
-                    name={'Opções'}
-                    placeholder={'Selecione as opções'}
+                    value={produtosList}
+                    options={produtos} 
+                    name={'Produtos'}
+                    placeholder={'Selecione os produtos'}
                     width={300}
                     maxSelected={2}
-                    onChange={(e) => setOptions(e.value)}
+                    onChange={(e) => setProdutosList(e.value)}
                 />
 
                 <Btn
                     label="Buscar"
                     icon='pi pi-search'
                     onClick={() => {
-                        onFilterChange({ dateRange: date, categories, selectedOptions: options })
+                        onFilterChange({ dateRange: date, categories: categoriaSelected, selectedOptions: produtosList, estado: estadoSelected })
                     }}
                 />
             </div>

@@ -9,14 +9,16 @@ import Temas from './charts/temas'
 import Tags from './charts/tags'
 import Filtros from './Filtros'
 import './index.css'
+import Demografia from './charts/demografia'
 
 export default function Dashboard() {
     const navigate = useNavigate();
 
     const [filters, setFilters] = useState<Filters>({
         dateRange: undefined,
-        categories: [],
-        selectedOptions: []
+        categories: {id: '', name: ''},
+        selectedOptions: [],
+        estado: {id: ''},
     })  
 
     useEffect(() => {
@@ -39,6 +41,9 @@ export default function Dashboard() {
                         <section className='bottom-charts'>
                             <Tags filters={ filters }/>
                             <Temas filters={ filters }/>
+                        </section>
+                        <section className='demografico-charts'>
+                            <Demografia filters={ filters }/>
                         </section>
                     </div>
                 </div>

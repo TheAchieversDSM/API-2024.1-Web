@@ -42,7 +42,7 @@ export default function Upload() {
                     <FileUpload
                         mode="basic"
                         name="file"
-                        url="http://localhost:1313/base-importer/import"
+                        url="http://localhost:8000/pln/execute"
                         accept=".csv"
                         maxFileSize={1000000000}
                         onUpload={onUpload}

@@ -14,7 +14,15 @@ export default function Temas({ filters }: { filters: Filters }) {
 
     useEffect(() => {
         if (isFilterSelected) {
-            const formattedOptions = filters.selectedOptions.map(option => option.name.replace(/\s/g, '')).join(',');
+            let formattedOptions = '';
+
+            if (Array.isArray(filters.categories)) {
+                formattedOptions = filters.categories.map(option => `${option.name}`).join(', ');
+            } else {
+                formattedOptions = `${filters.categories.name}`;
+            }
+
+            console.log(formattedOptions)
 
             fetch(`http://localhost:1313/summary/getAllByCategories/comments/${formattedOptions}`)
                 .then(response => response.json())
@@ -41,15 +49,15 @@ export default function Temas({ filters }: { filters: Filters }) {
                             {
                                 label: 'Quantidade',
                                 backgroundColor: [
-                                    "#E97947",
-                                    "#FF8556",
-                                    "#FF9F75",
-                                    "#FFC160",
-                                    "#6AD1FC",
-                                    "#3FC5FA",
-                                    "#5C96F7",
-                                    "#4F88DB",
-                                    "#2b63b6"
+                                    "#C47F44",
+                                    "#D78C4B",
+                                    "#DFA36F",
+                                    "#E4B286",
+                                    "#8FA9B9",
+                                    "#5C8198",
+                                    "#3C6985",
+                                    "#0B4366",
+                                    "#0A3D5D", 
                                 ],
                                 data: dataValues
                             },
@@ -62,7 +70,7 @@ export default function Temas({ filters }: { filters: Filters }) {
                     console.error('Erro ao chamar a rota:', error);
                 });
         }
-    }, [isFilterSelected]);
+    }, [isFilterSelected, filters]);
 
     useEffect(() => {
         const documentStyle = getComputedStyle(document.documentElement);
@@ -82,7 +90,7 @@ export default function Temas({ filters }: { filters: Filters }) {
     }, []);
     return(
         <>
-            <Box titulo="Temas">
+            <Box titulo="Temas por tags">
                 <div className="chart-div" style={{ width: '25vw'}}>
                     <Chart type="pie" data={chartData} options={chartOptions} style={{height: '35vh'}} />
                 </div>
