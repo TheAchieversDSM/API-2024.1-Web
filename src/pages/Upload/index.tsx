@@ -1,15 +1,17 @@
-import { RefObject, useRef, useState } from "react";
-import Box from "../../components/box";
+import { RefObject, useEffect, useRef, useState } from "react";
 import Container from "../../components/container";
 import { Sidebar } from "../../components/sidebar";
 import { FileUpload } from "primereact/fileupload";
+import isAuthenticated from "../../utils/auth";
+import { useNavigate } from "react-router";
 import { Toast } from "primereact/toast";
-import "./index.css"
+import Box from "../../components/box";
 import TabelaUpload from "./tabela";
-import axios from "axios";
-import url from "../../services/config";
+import "./index.css"
 
 export default function Upload() {
+    const navigate = useNavigate();
+
     const [uploadedFile, setUploadedFile] = useState(null);
     const toast = useRef<Toast | null>(null);
 
@@ -20,6 +22,14 @@ export default function Upload() {
             toast.current.show({ severity: 'info', summary: 'Success', detail: 'Upload do arquivo realizado com sucesso!' });
         }
     };
+
+    useEffect(() => {
+        const auth = isAuthenticated()        
+
+        if (auth === false) {
+            navigate('/')
+        }
+    })
 
     return(
         <>
@@ -32,7 +42,7 @@ export default function Upload() {
                     <FileUpload
                         mode="basic"
                         name="file"
-                        url="http://localhost:1313/base-importer/import"
+                        url="http://localhost:8000/pln/execute"
                         accept=".csv"
                         maxFileSize={1000000000}
                         onUpload={onUpload}

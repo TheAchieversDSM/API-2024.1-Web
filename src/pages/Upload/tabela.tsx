@@ -14,7 +14,7 @@ export default function TabelaUpload(){
                 const formattedData = response.data.map(item => ({
                     ...item,
                     createdAt: formatDateString(item.createdAt),
-                    status: item.status === 'success' ? 'Concluído!' : 'Erro ao enviar arquivo'
+                    status: item.status 
                 }));
                 setFile(formattedData);
             })
