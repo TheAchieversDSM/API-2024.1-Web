@@ -107,7 +107,7 @@ export default function Demografia({ filters }: { filters: Filters }) {
                 setChartOptions(options);
             });
         }
-    }, [filters.dateRange, filters.selectedOptions]);
+    }, [filters.dateRange, filters.selectedOptions, filters]);
 
     return(
         <>

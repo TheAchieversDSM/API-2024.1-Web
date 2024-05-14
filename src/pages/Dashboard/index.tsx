@@ -40,7 +40,7 @@ export default function Dashboard() {
                         <Avaliacoes filters={ filters }/>
                         <section className='bottom-charts'>
                             <Tags filters={ filters }/>
-                            <Temas filters={ filters }/>
+                            {/* <Temas filters={ filters }/> */}
                         </section>
                         <section className='demografico-charts'>
                             <Demografia filters={ filters }/>
