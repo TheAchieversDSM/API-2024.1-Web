@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Chart } from 'primereact/chart';
 import { Filters } from "../../../interfaces/filters";
 import url from "../../../services/config";
+import axios from "axios";
 
 export default function Tags({ filters }: { filters: Filters }) {
     const [chartData, setChartData] = useState({});
@@ -18,19 +19,18 @@ export default function Tags({ filters }: { filters: Filters }) {
             let formattedOptions = '';
 
             if (Array.isArray(filters.categories)) {
-                formattedOptions = filters.categories.map(option => `${option.name}`).join(', ');
+                formattedOptions = filters.categories.map(option => option.name).join(', ');
             } else {
-                formattedOptions = `${filters.categories.name}`;
+                formattedOptions = filters.categories.name;
             }
-            
-            console.log(formattedOptions)
-            fetch(`http://localhost:1313/summary/getAllByCategories/tag/${formattedOptions}`)
-                .then(response => response.json())
-                .then(data => {
-                    const labelsSet = new Set<string>();
-                    const dataMap = new Map<string, number>();
 
-                    data.forEach((item: { text: string, amount: number }) => {
+            axios.get(`${url.baseURL}/summary/getAllByCategories/tag/${formattedOptions}`)
+                .then(response => {
+                    const data = response.data;
+                    const labelsSet = new Set();
+                    const dataMap = new Map();
+
+                    data.forEach((item: { text: unknown; amount: any; }) => {
                         if (!labelsSet.has(item.text)) {
                             labelsSet.add(item.text);
                             dataMap.set(item.text, item.amount);
@@ -40,8 +40,9 @@ export default function Tags({ filters }: { filters: Filters }) {
                         }
                     });
 
-                    const labels = Array.from(labelsSet);
-                    const dataValues = Array.from(dataMap.values());
+                    const sortedData = Array.from(dataMap.entries()).sort(([, a], [, b]) => b - a);
+                const labels = sortedData.map(([label]) => label);
+                const dataValues = sortedData.map(([, value]) => value);
 
                     const chartData = {
                         labels: labels,
