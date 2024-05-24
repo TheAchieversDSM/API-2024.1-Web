@@ -23,6 +23,7 @@ export default function TabelaUpload(){
                 console.error('Erro ao obter dados:', error);
             });
     }, []);
+  
     const formatDateString = (dateString: string) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
