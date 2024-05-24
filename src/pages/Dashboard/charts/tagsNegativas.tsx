@@ -3,45 +3,50 @@ import { useState, useEffect } from 'react';
 import { Chart } from 'primereact/chart';
 import { Filters } from "../../../interfaces/filters";
 import url from "../../../services/config";
+import axios from "axios";
 
-export default function Tags({ filters }: { filters: Filters }) {
+export default function TagsNegativas({ filters }: { filters: Filters }) {
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
     const [isFilterSelected, setIsFilterSelected] = useState(false);
 
     useEffect(() => {
         setIsFilterSelected(filters.selectedOptions.length > 0);
+        console.log(filters)
     }, [filters.selectedOptions]);
 
     useEffect(() => {
         if (isFilterSelected) {
             let formattedOptions = '';
 
-            if (Array.isArray(filters.categories)) {
-                formattedOptions = filters.categories.map(option => `${option.name}`).join(', ');
-            } else {
-                formattedOptions = `${filters.categories.name}`;
+            if (Array.isArray(filters.selectedOptions)) {
+                formattedOptions = filters.selectedOptions.map(option => option.id).join(', ');
+                console.log(formattedOptions)
             }
-            
-            console.log(formattedOptions)
-            fetch(`http://localhost:1313/summary/getAllByCategories/tag/${formattedOptions}`)
-                .then(response => response.json())
-                .then(data => {
-                    const labelsSet = new Set<string>();
-                    const dataMap = new Map<string, number>();
 
-                    data.forEach((item: { text: string, amount: number }) => {
-                        if (!labelsSet.has(item.text)) {
-                            labelsSet.add(item.text);
-                            dataMap.set(item.text, item.amount);
-                        } else {
-                            const currentAmount = dataMap.get(item.text) || 0;
-                            dataMap.set(item.text, currentAmount + item.amount);
+            axios.get(`${url.baseURL}/summary/getAllByProduct/${formattedOptions}`)
+                .then(response => {
+                    const data = response.data;
+                    console.log(data)
+                    const labelsSet = new Set();
+                    const dataMap = new Map();
+
+                    
+                    data.forEach((item: { sentiment_review: string; text: unknown; amount: any; }) => {
+                        if (item.sentiment_review === "negativa") {
+                            if (!labelsSet.has(item.text)) {
+                                labelsSet.add(item.text);
+                                dataMap.set(item.text, item.amount);
+                            } else {
+                                const currentAmount = dataMap.get(item.text) || 0;
+                                dataMap.set(item.text, currentAmount + item.amount);
+                            }
                         }
                     });
 
-                    const labels = Array.from(labelsSet);
-                    const dataValues = Array.from(dataMap.values());
+                    const sortedData = Array.from(dataMap.entries()).sort(([, a], [, b]) => b - a);
+                    const labels = sortedData.map(([label]) => label);
+                    const dataValues = sortedData.map(([, value]) => value);
 
                     const chartData = {
                         labels: labels,
@@ -49,15 +54,7 @@ export default function Tags({ filters }: { filters: Filters }) {
                             {
                                 label: 'Quantidade',
                                 backgroundColor: [
-                                    "#C47F44",
-                                    "#D78C4B",
-                                    "#DFA36F",
-                                    "#E4B286",
-                                    "#8FA9B9",
-                                    "#5C8198",
-                                    "#3C6985",
-                                    "#0B4366",
-                                    "#0A3D5D",  
+                                    "#de4449", 
                                 ],
                                 data: dataValues
                             },
@@ -115,9 +112,9 @@ export default function Tags({ filters }: { filters: Filters }) {
 
     return(
         <>
-            <Box titulo="Sumário por tags">
+            <Box titulo="Sumário por tags negativas">
                 <div className="card flex justify-content-center" >
-                    <Chart type="bar" data={chartData} options={chartOptions} style={{height: '40vh', width: '66vw'}}/>
+                    <Chart type="bar" data={chartData} options={chartOptions} style={{height: '40vh', width: '30vw'}}/>
                 </div>
             </Box>
         </>

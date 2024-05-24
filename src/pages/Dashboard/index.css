@@ -17,7 +17,7 @@ h1 {
 
 .bottom-charts {
     margin-top: 30px;
-    gap: 30px;
+    gap: 25px;
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
