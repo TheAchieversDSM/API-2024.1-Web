@@ -11,6 +11,7 @@ import './index.css'
 import Demografia from './charts/demografia'
 import TagsPositivas from './charts/tagsPositivas'
 import TagsNegativas from './charts/tagsNegativas'
+import Recomendacoes from './charts/recomendacoes'
 
 export default function Dashboard() {
     const navigate = useNavigate();
@@ -42,10 +43,13 @@ export default function Dashboard() {
                         <section className='bottom-charts'>
                             <TagsPositivas filters={ filters }/>
                             <TagsNegativas filters={ filters }/>
-                            {/* <Temas filters={ filters }/> */}
+                        </section>
+                        <section className='bottom-charts'>
+                            <Demografia filters={ filters }/>
+                            <Recomendacoes filters={ filters }/>
                         </section>
                         <section className='demografico-charts'>
-                            <Demografia filters={ filters }/>
+                            
                         </section>
                     </div>
                 </div>

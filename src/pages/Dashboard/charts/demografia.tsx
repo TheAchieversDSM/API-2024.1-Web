@@ -77,11 +77,7 @@ export default function Demografia({ filters }: { filters: Filters }) {
                 const options = {
                     plugins: {
                         legend: {
-                            position: 'bottom',
-                            labels: {
-                                usePointStyle: true,
-                                padding: 15
-                            }
+                            display: false
                         }
                     },
                     responsive: true,
@@ -119,7 +115,7 @@ export default function Demografia({ filters }: { filters: Filters }) {
         <>
             <Box titulo="Sumário por idade e gênero">
                 <div className="demografia-chart-div" style={{ height: '40vh'}}>
-                    <Chart type="scatter" data={chartData} options={chartOptions} style={{height: '40vh', width: '66vw'}} />
+                    <Chart type="scatter" data={chartData} options={chartOptions} style={{height: '50vh', width: '35vw'}} />
                 </div>
             </Box>
         </>
