@@ -12,6 +12,12 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
     const [labels, setLabels] = useState<string[]>([])
 
     useEffect(() => {
+        if (filters.dateRange && labels.length > 0) {
+            fetchData();
+        }
+    }, [filters, labels])
+
+    useEffect(() => {
         if (filters.dateRange) {
             const newLabels = generateLabels(filters.dateRange[0], filters.dateRange[1])
             setLabels(newLabels)
@@ -53,50 +59,45 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
             setChartOptions(options);
         }
 
-        setChartData({})
+        fetchData();
     }, [filters])
+
+    async function fetchData() {
+        try {
+            const promises = filters.selectedOptions.map(async (option, index) => {
+                let data;
+                if (option.catId === 2) {
+                    data = await generateRandomData(option.name, option.catId, filters.estado);
+                } else {
+                    data = await generateRandomData(option.id, option.catId, filters.estado);
+                }
+
+                return {
+                    label: option.name,
+                    data: data,
+                    fill: false,
+                    borderColor: getRandomColor(index),
+                    tension: 0.4
+                };
+            });
+
+            const resolvedDatasets = await Promise.all(promises);
+
+            setDatasets(resolvedDatasets);
+        } catch (error) {
+            console.error('Erro ao criar datasets:', error);
+        }
+    }
 
     useEffect(() => {
         updateChartData(labels, datasets)
-    }, [labels, datasets, filters])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const promises = filters.selectedOptions.map(async (option, index) => {
-                    let data;
-                    if (option.catId === 2) {
-                        data = await generateRandomData(option.name, option.catId, filters.estado);
-                    } else {
-                        data = await generateRandomData(option.id, option.catId, filters.estado);
-                    }
-
-                    return {
-                        label: option.name,
-                        data: data,
-                        fill: false,
-                        borderColor: getRandomColor(index),
-                        tension: 0.4
-                    };
-                });
-
-                const resolvedDatasets = await Promise.all(promises);
-
-                setDatasets(resolvedDatasets);
-            } catch (error) {
-                console.error('Erro ao criar datasets:', error);
-            }
-        };
-
-        fetchData();
-    }, [filters.selectedOptions]);
+    }, [labels, datasets])
 
     function updateChartData(labels: string[], datasets: any[]) {
         const data = {
             labels: labels,
             datasets: datasets
         }
-        console.log(data)
         setChartData(data)
     }
 
@@ -115,51 +116,47 @@ export default function Avaliacoes({ filters }: { filters: Filters }) {
     async function generateRandomData(id: string, catId: number, stateId: any) {
         try {
             if (filters.dateRange) {
-                const formattedStartDate = new Date(filters.dateRange[0]).toISOString().slice(0, 10)
-                const formattedEndDate = new Date(filters.dateRange[1]).toISOString().slice(0, 10)
+                const formattedStartDate = new Date(filters.dateRange[0]).toISOString().slice(0, 10);
+                const formattedEndDate = new Date(filters.dateRange[1]).toISOString().slice(0, 10);
     
                 const res = await axios.get(`${url.baseURL}/products/averageRatingByState/${stateId}/${id}`, {
                     params: {
                         "startDate": formattedStartDate,
                         "endDate": formattedEndDate
                     }
-                })
+                });
     
-                const values = res.data.averageResponse; // Ajustado para acessar res.data.averageResponse
+                const values = res.data.averageResponse || [];
+                console.log("Valores",values)
     
-                const data: any = []
-    
-                const dateValueMap: Record<string, number> = {}
+                const dateValueMap: Record<string, number> = {};
     
                 values.forEach((d: any) => {
-                    const date = formatDate(new Date(d.date))
-                    dateValueMap[date] = d.averageRating
-                })
+                    const date = formatDate(new Date(d.date.replace(/-/g, '/')));
+                    console.log(date)
+                    dateValueMap[date] = d.averageRating;
+                });  
+                
     
-                labels.forEach((label: string) => {
-                    if (dateValueMap[label] !== undefined) {
-                        data.push(dateValueMap[label])
-                    } else {
-                        data.push(0)
-                    }
-                })
+                const data: number[] = labels.map((label: string) => {
+                    return dateValueMap[label] !== undefined ? dateValueMap[label] : 0;
+                });
     
-                return data
+                return data;
             }
         } catch (error) {
-            console.error('Erro ao obter dados da API:', error)
-            return []
+            console.error('Erro ao obter dados da API:', error);
+            return [];
         }
     
-
-        return []
+        return [];
     }
 
     function formatDate(date: Date) {
-        const day = (date.getDate() + 1).toString().padStart(2, '0')
-        const month = (date.getMonth() + 1).toString().padStart(2, '0')
-        const year = date.getFullYear()
-        return `${day}/${month}/${year}`
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
     }
 
     function getRandomColor(index: any) {

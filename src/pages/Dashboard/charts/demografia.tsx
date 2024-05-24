@@ -8,36 +8,35 @@ import url from "../../../services/config";
 export default function Demografia({ filters }: { filters: Filters }) {
     const [chartOptions, setChartOptions] = useState({});
     const [chartData, setChartData] = useState({});
-    
-    async function generateData(id: string, stateId: any) {
+    console.log(filters)
+    async function generateData(id: string, stateId: any, productName: string) {
         try {
             if (filters.dateRange) {
                 const formattedStartDate = new Date(filters.dateRange[0]).toISOString().slice(0, 10)
                 const formattedEndDate = new Date(filters.dateRange[1]).toISOString().slice(0, 10)
-    
+
                 const res = await axios.get(`${url.baseURL}/products/getProductDemography/${id}/${stateId}`, {
                     params: {
                         "startDate": formattedStartDate,
                         "endDate": formattedEndDate
                     }
                 })
-    
+
                 const values = res.data;
 
-                console.log(values)
-    
                 const formattedData = {
-                    Masculino: [] as { x: number; y: number }[],
-                    Feminino: [] as { x: number; y: number }[]
+                    [`${productName} - Masculino`]: [] as { x: number; y: number }[],
+                    [`${productName} - Feminino`]: [] as { x: number; y: number }[]
                 };
 
-                values.forEach((item: any) => {
+                values.forEach((item: { gender: string; age: any; rating: any; }) => {
                     if (item.gender === 'M') {
-                        formattedData.Masculino.push({ x: item.age, y: item.rating });
+                        formattedData[`${productName} - Masculino`].push({ x: item.age, y: item.rating });
                     } else {
-                        formattedData.Feminino.push({ x: item.age, y: item.rating });
+                        formattedData[`${productName} - Feminino`].push({ x: item.age, y: item.rating });
                     }
                 });
+
 
                 return formattedData;
             }
@@ -49,34 +48,36 @@ export default function Demografia({ filters }: { filters: Filters }) {
     useEffect(() => {
         if (filters.dateRange && filters.selectedOptions.length > 0) {
             const promises = filters.selectedOptions.map(async (option) => {
-                let data = await generateData(option.id, filters.estado);
+                let data = await generateData(option.id, filters.estado, option.name);
                 return data;
             });
 
             Promise.all(promises).then((formattedDatas) => {
-                const chartData = {
-                    datasets: [
+                const datasets = formattedDatas.flatMap((data, index) => {
+                    const pointStyle = index % 2 === 0 ? 'rectRounded' : 'triangle'; // Alternando estilos por produto
+
+                    return [
                         {
-                            label: 'Masculino',
-                            data: formattedDatas.flatMap(data => data ? data.Masculino.map(({ x, y }) => ({ x, y })) : []),
-                            backgroundColor: '#0A3D5D'
+                            label: `${filters.selectedOptions[index].name} - Masculino`,
+                            data: data ? data[`${filters.selectedOptions[index].name} - Masculino`] : [],
+                            backgroundColor: 'rgba(10, 61, 93, 0.8)',
+                            pointStyle
                         },
                         {
-                            label: 'Feminino',
-                            data: formattedDatas.flatMap(data => data ? data.Feminino.map(({ x, y }) => ({ x, y })) : []),
-                            backgroundColor: '#C47F44' 
+                            label: `${filters.selectedOptions[index].name} - Feminino`,
+                            data: data ? data[`${filters.selectedOptions[index].name} - Feminino`] : [],
+                            backgroundColor: 'rgba(196, 127, 68, 0.8)',
+                            pointStyle
                         }
-                    ]
-                };
+                    ];
+                });
 
+                const chartData = { datasets };
+                
                 const options = {
                     plugins: {
                         legend: {
-                            position: 'bottom',
-                            labels: {
-                                usePointStyle: true,
-                                padding: 15
-                            }
+                            display: false
                         }
                     },
                     responsive: true,
@@ -107,13 +108,14 @@ export default function Demografia({ filters }: { filters: Filters }) {
                 setChartOptions(options);
             });
         }
-    }, [filters.dateRange, filters.selectedOptions]);
+    }, [filters.dateRange, filters.selectedOptions, filters.estado]);
+
 
     return(
         <>
             <Box titulo="Sumário por idade e gênero">
                 <div className="demografia-chart-div" style={{ height: '40vh'}}>
-                    <Chart type="scatter" data={chartData} options={chartOptions} style={{height: '40vh', width: '66vw'}} />
+                    <Chart type="scatter" data={chartData} options={chartOptions} style={{height: '50vh', width: '35vw'}} />
                 </div>
             </Box>
         </>
