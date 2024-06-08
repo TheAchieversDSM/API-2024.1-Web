@@ -9,6 +9,7 @@ export default function Input(props: IInput) {
                 value={props.value}
                 onChange={props.onChange}
                 placeholder={props.placeholder}
+                name={props.name}
                 style={{
                     width: props.width || '375px', 
                     height: props.height || '50px',
