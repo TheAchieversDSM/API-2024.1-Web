@@ -137,6 +137,7 @@ export default function CreateUser() {
 
                     <div className="create-container">
                         <Input
+                            name='email'
                             value={email}
                             placeholder='Email'
                             onChange={(e: any) => setEmailValue(e)}
@@ -144,6 +145,7 @@ export default function CreateUser() {
                         />
 
                         <Input
+                            name='name'
                             value={name}
                             placeholder='Nome'
                             onChange={(e: any) => setNameValue(e)}
@@ -153,6 +155,7 @@ export default function CreateUser() {
 
                         <div className="adjust-input" style={{ marginLeft: 15 }}>
                             <InputPassword
+                                name='pwd'
                                 value={pwd}
                                 placeholder='Senha'
                                 onChange={(e: any) => setPwdValue(e)}
@@ -160,6 +163,7 @@ export default function CreateUser() {
                             />
 
                             <InputPassword
+                                name='pwdconfirm'
                                 value={pwdConf}
                                 placeholder='Repetir a senha'
                                 onChange={(e: any) => setPwdConfValue(e)}
@@ -168,6 +172,7 @@ export default function CreateUser() {
                         </div>
 
                         <Btn
+                            name='button'
                             label={'Cadastrar'}
                             onClick={() => signUp()}
                             width={375}
