@@ -15,6 +15,7 @@ export default function Select(props: ISelect) {
                 placeholder={props.placeholder}
                 checkmark={true}
                 highlightOnSelect={false}
+                name={props.name}
                 showClear
                 filter
                 style={{ width: props.width || '250px' }}
