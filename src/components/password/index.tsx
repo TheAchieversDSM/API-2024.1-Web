@@ -15,6 +15,7 @@ export default function InputPassword(props: IInput) {
                 onChange={props.onChange}
                 placeholder={props.placeholder}
                 feedback={false}
+                name={props.name}
                 inputStyle={{
                     width: props.width || '375px',
                     height: props.height || '50px',

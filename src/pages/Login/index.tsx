@@ -29,7 +29,7 @@ export default function Login() {
             password: pwd
         }).then((res) => {
             localStorage.setItem('token', res.data.token)
-            
+
             navigate('/dashboard')
         }).catch((error) => {
             console.log(error)
@@ -48,18 +48,21 @@ export default function Login() {
                 <img src={logo} />
                 <div className="form-content">
                     <Input
+                        name='email'
                         value={email}
                         placeholder='Email'
                         onChange={(e: any) => setEmailValue(e)}
                     />
 
                     <InputPassword
+                        name='pwd'
                         value={pwd}
                         placeholder='Senha'
                         onChange={(e: any) => setPwdValue(e)}
                     />
 
                     <Btn
+                        name='button'
                         label={'Entrar'}
                         onClick={() => login()}
                         width={375}
